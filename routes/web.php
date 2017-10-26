@@ -21,6 +21,8 @@ Route::group([ 'prefix' => 'projects' ], function () {
 
     Route::post('', 'ProjectsController@store' );
 
+    Route::post('verifyCode','ProjectsController@verifyCode');
+
     Route::put('{id}', 'ProjectsController@update' );
 
 });

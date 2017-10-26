@@ -32,6 +32,26 @@ class ProjectsController extends Controller
 
     }
 
+    public function verifyCode(Request $request){
+        $value = $request['keyValue'];
+        $id    = $request['keyId'];
+        $status = 200;
+
+        if($id == 0){
+            $count = Projects::where('projectCode','=',$value)->count();
+
+            ($count>0) ? $status = 422 : $status = 200;
+        }
+        else {
+
+            $count = Projects::where('projectCode','=',$value)->where('projectId','!=',$id)->count();
+
+            ($count>0) ? $status = 422 : $status = 200;
+        }
+
+        return response()->json(compact('status'));
+    }
+
  
     public function store(Request $request){
 
