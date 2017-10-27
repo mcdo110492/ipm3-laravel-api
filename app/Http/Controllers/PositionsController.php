@@ -31,6 +31,26 @@ class PositionsController extends Controller
         return response()->json([ 'status' => 200, 'data' => $get ]);
 
     }
+
+    public function verifyPosition(Request $request){
+        $value = $request['keyValue'];
+        $id    = $request['keyId'];
+        $status = 200;
+
+        if($id == 0){
+            $count = Positions::where('positionName','=',$value)->count();
+
+            ($count>0) ? $status = 422 : $status = 200;
+        }
+        else {
+
+            $count = Positions::where('positionName','=',$value)->where('positionId','!=',$id)->count();
+
+            ($count>0) ? $status = 422 : $status = 200;
+        }
+
+        return response()->json(compact('status'));
+    }
         
          
     public function store(Request $request){

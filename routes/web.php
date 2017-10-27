@@ -35,6 +35,8 @@ Route::group([ 'prefix' => 'positions' ], function () {
 
     Route::post('', 'PositionsController@store' );
 
+    Route::post('verifyPosition','PositionsController@verifyPosition');
+
     Route::put('{id}', 'PositionsController@update' );
 
 });
@@ -46,6 +48,8 @@ Route::group([ 'prefix' => 'employmentStatus' ], function () {
     Route::get('', 'EmploymentStatusController@index' );
 
     Route::post('', 'EmploymentStatusController@store' );
+
+    Route::post('verify','EmploymentStatusController@verify');
 
     Route::put('{id}', 'EmploymentStatusController@update' );
 
