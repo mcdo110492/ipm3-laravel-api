@@ -63,6 +63,8 @@ Route::group([ 'prefix' => 'employeeStatus' ], function () {
 
     Route::post('', 'EmployeeStatusController@store' );
 
+    Route::post('verify','EmployeeStatusController@verify');
+
     Route::put('{id}', 'EmployeeStatusController@update' );
 
 });
@@ -71,7 +73,62 @@ Route::group(['prefix' => 'employee'], function () {
     
     Route::get('','EmployeeController@index');
 
+
+    Route::post('verify','EmployeeController@verify');
+
     Route::post('register','EmployeeController@store');
+
+
+    Route::get('contact','EmployeeController@getContact');
+
+    Route::put('contact/{id}','EmployeeController@updateContact');
+
+
+    Route::get('health','EmployeeController@getHealth');
+    
+    Route::put('health/{id}','EmployeeController@updateHealth');
+
+
+    Route::get('government','EmployeeController@getGovernment');
+    
+    Route::put('government/{id}','EmployeeController@updateGovernment');
+
+
+    Route::get('account/{id}','EmployeeController@getAccount');
+
+    Route::put('username/{id}','EmployeeController@updateAccountUsername');
+
+    Route::put('account/status/{id}','EmployeeController@updateAccountStatus');
+
+    Route::put('account/reset/{id}','EmployeeController@updateAccountResetPassword');
+
+
+    Route::get('license/{id}','EmployeeController@getLicenses');
+
+    Route::post('license','EmployeeController@storeLicense');
+
+    Route::put('license/{id}','EmployeeController@updateLicense');
+
+
+    Route::get('education/{id}','EmployeeController@getEducations');
+
+    Route::post('education','EmployeeController@storeEducation');
+
+    Route::put('education/{id}','EmployeeController@updateEducation');
+
+
+    Route::get('training/{id}','EmployeeController@getTrainings');
+
+    Route::post('training','EmployeeController@storeTraining');
+
+    Route::put('training/{id}','EmployeeController@updateTraining');
+
+
+    Route::get('club/{id}','EmployeeController@getClubs');
+
+    Route::post('club','EmployeeController@storeClub');
+
+    Route::pput('club/{id}','EmployeeController@updateClub');
 
 });
 

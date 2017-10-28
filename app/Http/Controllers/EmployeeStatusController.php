@@ -31,6 +31,26 @@ class EmployeeStatusController extends Controller
         
         return response()->json([ 'status' => 200, 'data' => $get ]);
     }
+
+    public function verify(Request $request){
+        $value = $request['keyValue'];
+        $id    = $request['keyId'];
+        $status = 200;
+
+        if($id == 0){
+            $count = EmployeeStatus::where('employeeStatusName','=',$value)->count();
+
+            ($count>0) ? $status = 422 : $status = 200;
+        }
+        else {
+
+            $count = EmployeeStatus::where('employeeStatusName','=',$value)->where('employeeStatusId','!=',$id)->count();
+
+            ($count>0) ? $status = 422 : $status = 200;
+        }
+
+        return response()->json(compact('status'));
+    }
         
          
     public function store(Request $request){
