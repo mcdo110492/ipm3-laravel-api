@@ -128,7 +128,7 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::post('club','EmployeeController@storeClub');
 
-    Route::pput('club/{id}','EmployeeController@updateClub');
+    Route::put('club/{id}','EmployeeController@updateClub');
 
 });
 
