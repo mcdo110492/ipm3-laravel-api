@@ -92,6 +92,10 @@ class EmployeeController extends Controller
             'middleName'            => 'required',
             'lastName'              => 'required',
             'birthday'              => 'required',
+            'placeOfBirth'          => 'required',
+            'civilStatus'           => 'required',
+            'citizenship'           => 'required',
+            'religion'              => 'required',
             'positionId'            => 'required',
             'employeeStatusId'      => 'required',
             'employmentStatusId'    => 'required',
@@ -113,11 +117,11 @@ class EmployeeController extends Controller
                 'middleName'        =>  $request['middleName'],
                 'lastName'          =>  $request['lastName'],
                 'birthday'          =>  $request['birthday'],
-                'placeOfBirth'      => $na,
-                'civilStatus'       => $na,
-                'citizenship'       => $na,
-                'religion'          => $na,
-                'projectId'         => $project
+                'placeOfBirth'      =>  $reqeust['placeOfBirth'],
+                'civilStatus'       =>  $request['civilStatus'],
+                'citizenship'       =>  $reqeust['citizenship'],
+                'religion'          =>  $reqeust['religion'],
+                'projectId'         =>  $project
             ];
 
             $personal   =   EmployeePersonalInfo::create($personalData);

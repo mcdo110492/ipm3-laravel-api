@@ -12,6 +12,17 @@
 */
 Route::post('authenticate','AuthenticateController@authenticate');
 
+Route::group(['prefix' => 'routeAuthenticate', 'middleware' => ['jwt.auth']], function () {
+    
+   Route::get('', function () {
+     
+        return response()->json(['status' => 200, 'message' => 'ok']);
+
+   });
+
+});
+
+
 
 Route::group([ 'prefix' => 'projects' ], function () {
 
