@@ -5,6 +5,7 @@ namespace Ipm\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 use Ipm\EmployeePersonalInfo;
 use Ipm\EmployeeEmploymentInfo;
@@ -42,8 +43,11 @@ class EmployeeController extends Controller
         $filter     = $request['filter'];
         $project    = ($this->role == 1) ? $request['projectId'] : $this->projectId;
 
+        $select     = 'ep.employeeId, ep.employeeNumber, ep.firstName, ep.middleName, ep.lastName, ep.profileImage, p.positionName, es.employeeStatusName, emps.employmentStatusName';
+
         $count      = EmployeePersonalInfo::where('projectId','=',$project)->count();
         $get        = DB::table('employeePersonalInfo as ep')
+                      ->selectRaw($select)
                       ->leftJoin('employeeEmploymentInfo as ee','ee.employeeId','=','ep.employeeId')
                       ->leftJoin('positions as p','p.positionId','=','ee.positionId')
                       ->leftJoin('employeeStatus as es','es.employeeStatusId','=','ee.employeeStatusId')
@@ -107,7 +111,7 @@ class EmployeeController extends Controller
 
         DB::transaction(function () use ($request) {
 
-            $project = ( $this->role == 1 ) ? $request['projectId'] : $this->projectId;
+            $project =  ( $this->role == 1 ) ? $request['projectId'] : $this->projectId;
             
             $na = 'N/A'; // not available
             
@@ -117,10 +121,10 @@ class EmployeeController extends Controller
                 'middleName'        =>  $request['middleName'],
                 'lastName'          =>  $request['lastName'],
                 'birthday'          =>  $request['birthday'],
-                'placeOfBirth'      =>  $reqeust['placeOfBirth'],
+                'placeOfBirth'      =>  $request['placeOfBirth'],
                 'civilStatus'       =>  $request['civilStatus'],
-                'citizenship'       =>  $reqeust['citizenship'],
-                'religion'          =>  $reqeust['religion'],
+                'citizenship'       =>  $request['citizenship'],
+                'religion'          =>  $request['religion'],
                 'projectId'         =>  $project
             ];
 
@@ -176,6 +180,80 @@ class EmployeeController extends Controller
 
         return response()->json([ 'status'  =>  201, 'message'  =>  'Created' ]);
 
+    }
+
+    public function getProfile($id){
+
+        if($this->role == 1){
+            $get = EmployeePersonalInfo::where('employeeId','=',$id)->get()->first();
+        }
+        else{
+            $count = EmployeePersonalInfo::where('employeeId','=',$id)->where('projectId','=',$this->projectId)->count();
+            if($count == 0){
+                return response()->json(['status' => 404, 'message' => 'Not Found'],404);
+            }
+            $get = EmployeePersonalInfo::where('employeeId','=',$id)->where('projectId','=',$this->projectId)->get()->first();
+        }
+
+        return response()->json([ 'status' => 200, 'data' => $get ]);
+    }
+
+    public function updateProfile(Request $request, $id){
+
+        $validatedData = $request->validate([
+            'employeeNumber'    =>  ['required',
+                                     Rule::unique('employeePersonalInfo')->ignore($id,'employeeId')],
+            'firstName'         =>  'required',
+            'middleName'        =>  'required',
+            'lastName'          =>  'required',
+            'birthday'          =>  'required',
+            'placeOfBirth'      =>  'required',
+            'civilStatus'       =>  'required',
+            'citizenship'       =>  'required',
+            'religion'          =>  'required'
+        ]);
+
+        $data = [
+            'employeeNumber'    =>  $request['employeeNumber'],
+            'firstName'         =>  $request['firstName'],
+            'middleName'        =>  $request['middleName'],
+            'lastName'          =>  $request['lastName'],
+            'birthday'          =>  Carbon::parse($request['birthday']),
+            'placeOfBirth'      =>  $request['placeOfBirth'],
+            'civilStatus'       =>  $request['civilStatus'],
+            'citizenship'       =>  $request['citizenship'],
+            'religion'          =>  $request['religion']
+        ];
+
+        EmployeePersonalInfo::where('employeeId','=',$id)->update($data);
+
+        return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
+
+    }
+
+    public function getEmployment($id){
+        
+        $get = EmployeeEmploymentInfo::where('employeeId','=',$id)->get();
+
+        return response()->json([ 'status' => 200, 'data' => $get ]);
+        
+    }
+
+    public function updateEmployment(Request $reqeust, $id){
+
+        $validatedData = $reqeust->validate([
+            'positionId'            =>  'required',
+            'employeeStatusId'      =>  'required',
+            'employmentStatusId'    =>  'required',
+            'contractStart'         =>  'required',
+            'contractEnd'           =>  'required',
+            'salary'                =>  'required',
+            'remarks'               =>  'required'
+        ]);
+
+        EmployeeEmploymentInfo::where('employeeId','=',$id)->update($validatedData);
+        
+        return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
     }
 
     public function getContact($id){

@@ -90,17 +90,27 @@ Route::group(['prefix' => 'employee'], function () {
     Route::post('register','EmployeeController@store');
 
 
-    Route::get('contact','EmployeeController@getContact');
+    Route::get('profile/{id}','EmployeeController@getProfile');
+
+    Route::post('profile/{id}','EmployeeController@updateProfile');
+
+
+    Route::get('employment/{id}','EmployeeController@getEmployment');
+    
+    Route::post('employment/{id}','EmployeeController@updateEmployment');
+
+
+    Route::get('contact/{id}','EmployeeController@getContact');
 
     Route::put('contact/{id}','EmployeeController@updateContact');
 
 
-    Route::get('health','EmployeeController@getHealth');
+    Route::get('health/{id}','EmployeeController@getHealth');
     
     Route::put('health/{id}','EmployeeController@updateHealth');
 
 
-    Route::get('government','EmployeeController@getGovernment');
+    Route::get('government/{id}','EmployeeController@getGovernment');
     
     Route::put('government/{id}','EmployeeController@updateGovernment');
 
@@ -142,6 +152,7 @@ Route::group(['prefix' => 'employee'], function () {
     Route::put('club/{id}','EmployeeController@updateClub');
 
 });
+
 
 
 

@@ -3,6 +3,7 @@
 namespace Ipm;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class EmployeeEmploymentInfo extends Model
 {
