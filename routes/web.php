@@ -92,12 +92,12 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::get('profile/{id}','EmployeeController@getProfile');
 
-    Route::post('profile/{id}','EmployeeController@updateProfile');
+    Route::put('profile/{id}','EmployeeController@updateProfile');
 
 
     Route::get('employment/{id}','EmployeeController@getEmployment');
     
-    Route::post('employment/{id}','EmployeeController@updateEmployment');
+    Route::put('employment/{id}','EmployeeController@updateEmployment');
 
 
     Route::get('contact/{id}','EmployeeController@getContact');

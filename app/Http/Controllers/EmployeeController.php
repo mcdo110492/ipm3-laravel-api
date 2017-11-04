@@ -233,15 +233,15 @@ class EmployeeController extends Controller
 
     public function getEmployment($id){
         
-        $get = EmployeeEmploymentInfo::where('employeeId','=',$id)->get();
+        $get = EmployeeEmploymentInfo::where('employeeId','=',$id)->get()->first();
 
         return response()->json([ 'status' => 200, 'data' => $get ]);
         
     }
 
-    public function updateEmployment(Request $reqeust, $id){
+    public function updateEmployment(Request $request, $id){
 
-        $validatedData = $reqeust->validate([
+        $validatedData = $request->validate([
             'positionId'            =>  'required',
             'employeeStatusId'      =>  'required',
             'employmentStatusId'    =>  'required',
@@ -251,14 +251,24 @@ class EmployeeController extends Controller
             'remarks'               =>  'required'
         ]);
 
-        EmployeeEmploymentInfo::where('employeeId','=',$id)->update($validatedData);
+        $data = [
+            'positionId'            =>  $request['positionId'],
+            'employeeStatusId'      =>  $request['employeeStatusId'],
+            'employmentStatusId'    =>  $request['employmentStatusId'],
+            'contractStart'         =>  Carbon::parse($request['contractStart']),
+            'contractEnd'           =>  Carbon::parse($request['contractEnd']),
+            'salary'                =>  $request['salary'],
+            'remarks'               =>  $request['remarks']
+        ];
+
+        EmployeeEmploymentInfo::where('employeeEmploymentId','=',$id)->update($data);
         
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
     }
 
     public function getContact($id){
 
-        $get = EmployeeContactInfo::where('employeeId','=',$id)->get();
+        $get = EmployeeContactInfo::where('employeeId','=',$id)->get()->first();
 
         return response()->json([ 'status' => 200, 'data' => $get ]);
 
@@ -281,7 +291,7 @@ class EmployeeController extends Controller
 
     public function getHealth($id){
 
-        $get = EmployeeHealthInfo::where('employeeId','=',$id)->get();
+        $get = EmployeeHealthInfo::where('employeeId','=',$id)->get()->first();
 
         return response()->json([ 'status' => 200, 'data' => $get ]);
     }
@@ -302,7 +312,7 @@ class EmployeeController extends Controller
 
     public function getGovernment($id){
 
-        $get = EmployeeGovernmentInfo::where('employeeId','=',$id)->get();
+        $get = EmployeeGovernmentInfo::where('employeeId','=',$id)->get()->first();
 
         return response()->json([ 'status' => 200, 'data' => $get ]);
 
