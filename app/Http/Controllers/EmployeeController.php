@@ -390,23 +390,42 @@ class EmployeeController extends Controller
         return response()->json([ 'status' => 200, 'data' => $get ]);
     }
 
-    public function storeLicense(Request $request){
+    public function verifyLicenses(Request $request){
+        $value = $request['keyValue'];
+        $id    = $request['keyId'];
+        $status = 200;
+
+        if($id == 0){
+            $count = EmployeeLicenseInfo::where('licenseNumber','=',$value)->count();
+
+            ($count>0) ? $status = 422 : $status = 200;
+        }
+        else {
+
+            $count = EmployeeLicenseInfo::where('licenseNumber','=',$value)->where('employeeLicenseId','!=',$id)->count();
+
+            ($count>0) ? $status = 422 : $status = 200;
+        }
+
+        return response()->json(compact('status'));
+    }
+
+    public function storeLicense(Request $request, $id){
 
         $validatedData = $request->validate([
-            'employeeId'        =>  'required|integer',
             'licenseNumber'     =>  'required|unique:employeeLicenseInfo,licenseNumber',
             'licenseType'       =>  'required',
             'dateIssued'        =>  'required|date',
-            'dateExpiry'        =>  'required|date',
-            'licenseImage'      =>  'required'
+            'dateExpiry'        =>  'required|date'
         ]);
 
         $data = [
-            'employeeId'        =>  $request['employeeId'],
+            'employeeId'        =>  $id,
             'licenseNumber'     =>  $request['licenseNumber'],
             'licenseType'       =>  $request['licenseType'],
             'dateIssued'        =>  $request['dateIssued'],
-            'dateExpiry'        =>  $request['dateExpiry']
+            'dateExpiry'        =>  $request['dateExpiry'],
+            'licenseImage'      => 'licenses/default.jpg'
         ];
 
         EmployeeLicenseInfo::create($data);
@@ -427,11 +446,10 @@ class EmployeeController extends Controller
         ]);
 
         $data = [
-            'employeeId'        =>  $request['employeeId'],
             'licenseNumber'     =>  $request['licenseNumber'],
             'licenseType'       =>  $request['licenseType'],
-            'dateIssued'        =>  $request['dateIssued'],
-            'dateExpiry'        =>  $request['dateExpiry']
+            'dateIssued'        =>  Carbon::parse($request['dateIssued']),
+            'dateExpiry'        =>  Carbon::parse($request['dateExpiry'])
         ];
 
         EmployeeLicenseInfo::where('employeeLicenseId','=',$id)->update($data);

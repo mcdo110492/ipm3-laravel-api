@@ -126,7 +126,9 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::get('license/{id}','EmployeeController@getLicenses');
 
-    Route::post('license','EmployeeController@storeLicense');
+    Route::post('license/verify','EmployeeController@verifyLicenses');
+
+    Route::post('license/{id}','EmployeeController@storeLicense');
 
     Route::put('license/{id}','EmployeeController@updateLicense');
 
