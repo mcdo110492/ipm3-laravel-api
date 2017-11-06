@@ -267,7 +267,7 @@ class EmployeeController extends Controller
 
     public function updateContact(Request $request, $id){
 
-        $contract = EmployeeContactInfo::findOrFail($id);
+        $contact = EmployeeContactInfo::findOrFail($id);
 
         $validatedData = $request->validate([
             'presentAddress'    =>    'required|max:150',
@@ -505,7 +505,7 @@ class EmployeeController extends Controller
         return response()->json([ 'status' => 200, 'data' => $get ]);
     }
 
-    public function storeTraining(Request $request){
+    public function storeTraining(Request $request,$id){
 
         $validatedData = $request->validate([
             'trainingName'  =>  'required|max:150',

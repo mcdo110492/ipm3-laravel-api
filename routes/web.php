@@ -142,7 +142,7 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::get('training/{id}','EmployeeController@getTrainings');
 
-    Route::post('training','EmployeeController@storeTraining');
+    Route::post('training/{id}','EmployeeController@storeTraining');
 
     Route::put('training/{id}','EmployeeController@updateTraining');
 
