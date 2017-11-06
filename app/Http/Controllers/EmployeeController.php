@@ -549,10 +549,9 @@ class EmployeeController extends Controller
 
     }
 
-    public function storeClub(Request $request){
+    public function storeClub(Request $request,$id){
 
         $validatedData = $request->validate([
-            'employeeId'        =>  'required|integer',
             'clubName'          =>  'required|max:150',
             'clubPosition'      =>  'required|max:150',
             'membershipDate'    =>  'required|date'
