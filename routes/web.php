@@ -135,7 +135,7 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::get('education/{id}','EmployeeController@getEducations');
 
-    Route::post('education','EmployeeController@storeEducation');
+    Route::post('education/{id}','EmployeeController@storeEducation');
 
     Route::put('education/{id}','EmployeeController@updateEducation');
 
@@ -149,7 +149,7 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::get('club/{id}','EmployeeController@getClubs');
 
-    Route::post('club','EmployeeController@storeClub');
+    Route::post('club/{id}','EmployeeController@storeClub');
 
     Route::put('club/{id}','EmployeeController@updateClub');
 

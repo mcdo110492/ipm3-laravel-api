@@ -20,7 +20,7 @@ class CreateEmployeeLicenseInfoTable extends Migration
             $table->string('licenseType',20);
             $table->date('dateIssued');
             $table->date('dateExpiry');
-            $table->string('licenseImage',200);
+            $table->string('licenseImage',200)->default('licenses/default.jpg');
             $table->timestamps();
         });
     }

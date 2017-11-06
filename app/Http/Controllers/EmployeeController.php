@@ -5,7 +5,6 @@ namespace Ipm\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 use Ipm\EmployeePersonalInfo;
 use Ipm\EmployeeEmploymentInfo;
@@ -24,6 +23,12 @@ class EmployeeController extends Controller
     protected $projectId;
 
     protected $role;
+
+    /**
+     * Changes in update using findOrFail method before validation to ensure that the id exist before validating or return a 404 error
+     * Change in creating method use array_prepend() to add the employeeId in the validated data array
+     * Use a model in update by using findOrFail and then update so that you can access the mutators in every model before updating
+     */
 
     public function __construct() {
 
@@ -200,6 +205,8 @@ class EmployeeController extends Controller
 
     public function updateProfile(Request $request, $id){
 
+        $personal = EmployeePersonalInfo::findOrFail($id);
+
         $validatedData = $request->validate([
             'employeeNumber'    =>  ['required',
                                      Rule::unique('employeePersonalInfo')->ignore($id,'employeeId')],
@@ -212,20 +219,10 @@ class EmployeeController extends Controller
             'citizenship'       =>  'required',
             'religion'          =>  'required'
         ]);
+        
 
-        $data = [
-            'employeeNumber'    =>  $request['employeeNumber'],
-            'firstName'         =>  $request['firstName'],
-            'middleName'        =>  $request['middleName'],
-            'lastName'          =>  $request['lastName'],
-            'birthday'          =>  Carbon::parse($request['birthday']),
-            'placeOfBirth'      =>  $request['placeOfBirth'],
-            'civilStatus'       =>  $request['civilStatus'],
-            'citizenship'       =>  $request['citizenship'],
-            'religion'          =>  $request['religion']
-        ];
+        $personal->update($validatedData);
 
-        EmployeePersonalInfo::where('employeeId','=',$id)->update($data);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
 
@@ -241,6 +238,8 @@ class EmployeeController extends Controller
 
     public function updateEmployment(Request $request, $id){
 
+        $employment = EmployeeEmploymentInfo::findOrFail($id);
+
         $validatedData = $request->validate([
             'positionId'            =>  'required',
             'employeeStatusId'      =>  'required',
@@ -250,18 +249,10 @@ class EmployeeController extends Controller
             'salary'                =>  'required',
             'remarks'               =>  'required'
         ]);
+   
 
-        $data = [
-            'positionId'            =>  $request['positionId'],
-            'employeeStatusId'      =>  $request['employeeStatusId'],
-            'employmentStatusId'    =>  $request['employmentStatusId'],
-            'contractStart'         =>  Carbon::parse($request['contractStart']),
-            'contractEnd'           =>  Carbon::parse($request['contractEnd']),
-            'salary'                =>  $request['salary'],
-            'remarks'               =>  $request['remarks']
-        ];
+        $employment->update($validatedData);
 
-        EmployeeEmploymentInfo::where('employeeEmploymentId','=',$id)->update($data);
         
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
     }
@@ -276,6 +267,8 @@ class EmployeeController extends Controller
 
     public function updateContact(Request $request, $id){
 
+        $contract = EmployeeContactInfo::findOrFail($id);
+
         $validatedData = $request->validate([
             'presentAddress'    =>    'required|max:150',
             'provincialAddress' =>    'required|max:150',
@@ -283,7 +276,8 @@ class EmployeeController extends Controller
             'telephoneNumber'   =>    'required|max:50'
         ]);
 
-        EmployeeContactInfo::where('employeeContactId','=',$id)->update($validatedData);
+
+        $contact->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
 
@@ -298,13 +292,16 @@ class EmployeeController extends Controller
 
     public function updateHealth(Request $request, $id){
 
+        $health = EmployeeHealthInfo::findOrFail($id);
+
         $validatedData = $request->validate([
             'height'    =>  'required',
             'weight'    =>  'required',
             'bloodType' =>  'required'
         ]);
 
-        EmployeeHealthInfo::where('employeeHealthId','=',$id)->update($validatedData);
+
+        $health->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
 
@@ -320,6 +317,8 @@ class EmployeeController extends Controller
 
     public function updateGovernment(Request $request, $id){
 
+        $government = EmployeeGovernmentInfo::findOrFail($id);
+
         $validatedData = $request->validate([
             'sssNumber'         =>  'required',
             'pagIbigNumber'     =>  'required',
@@ -327,7 +326,7 @@ class EmployeeController extends Controller
             'tinNumber'         =>  'required'
         ]);
 
-        EmployeeGovernmentInfo::where('employeeGovernmentId','=',$id)->update($validatedData);
+        $government->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
 
@@ -342,24 +341,28 @@ class EmployeeController extends Controller
 
     public function updateAccountUsername(Request $request, $id){
 
+        $account = EmployeeAccountInfo::findOrFail($id);
+
         $validatedData = $request->validate([
             'username'  =>  [ 'required',
                               Rule::unique('employeeAccountInfo')->ignore($id,'employeeAccountId')
             ]
         ]);
-        
-        EmployeeAccountInfo::where('employeeAccountId','=',$id)->update($validatedData);
+
+        $account->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
     }
 
     public function updateAccountStatus(Request $request, $id){
 
+        $account = EmployeeAccountInfo::findOrFail($id);
+
         $validatedData = $request->validate([
             'status'    =>  'required|numeric'
         ]);
 
-        EmployeeAccountInfo::where('employeeAccountId','=',$id)->update($validatedData);
+        $account->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Status has been change' ]);
 
@@ -367,17 +370,17 @@ class EmployeeController extends Controller
 
     public function updateAccountResetPassword(Request $request, $id){
 
-        $get = EmployeeAccountInfo::where('employeeAccountId','=',$id)->get();
+        $account = EmployeeAccountInfo::findOrFail($id);
+
+        $get    = $account->get();
 
         $username = $get->username;
 
-        $newPassword = Hash::make($username);
-
         $data = [
-            'password' => $newPassword
+            'password' => $username
         ];
 
-        EmployeeAccountInfo::where('employeeAccountId','=',$id)->update($data);
+        $account->update($data);
 
         return response()->json([ 'status' => 200 , 'message' => 'Password has been reset. And the new password is the username.' ]);
         
@@ -418,23 +421,18 @@ class EmployeeController extends Controller
             'dateIssued'        =>  'required|date',
             'dateExpiry'        =>  'required|date'
         ]);
+        
+        $newData                =   array_prepend($validatedData,$id,'employeeId');
 
-        $data = [
-            'employeeId'        =>  $id,
-            'licenseNumber'     =>  $request['licenseNumber'],
-            'licenseType'       =>  $request['licenseType'],
-            'dateIssued'        =>  $request['dateIssued'],
-            'dateExpiry'        =>  $request['dateExpiry'],
-            'licenseImage'      => 'licenses/default.jpg'
-        ];
-
-        EmployeeLicenseInfo::create($data);
+        EmployeeLicenseInfo::create($newData);
 
         return response()->json([ 'status' => 201, 'message' => 'Created' ]);
 
     }
 
     public function updateLicense(Request $request, $id){
+
+        $license = EmployeeLicenseInfo::findOrFail($id);
 
         $validatedData = $request->validate([
             'licenseNumber' =>  [ 'required',
@@ -445,14 +443,7 @@ class EmployeeController extends Controller
             'dateExpiry'    =>  'required|date'
         ]);
 
-        $data = [
-            'licenseNumber'     =>  $request['licenseNumber'],
-            'licenseType'       =>  $request['licenseType'],
-            'dateIssued'        =>  Carbon::parse($request['dateIssued']),
-            'dateExpiry'        =>  Carbon::parse($request['dateExpiry'])
-        ];
-
-        EmployeeLicenseInfo::where('employeeLicenseId','=',$id)->update($data);
+        $license->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
 
@@ -466,10 +457,9 @@ class EmployeeController extends Controller
 
     }
 
-    public function storeEducation(Request $request){
+    public function storeEducation(Request $request, $id){
 
         $validatedData = $request->validate([
-            'employeeId'    =>  'required|integer',
             'schoolName'    =>  'required|max:150',
             'schoolAddress' =>  'required|max:150',
             'schoolYear'    =>  'required|max:20',
@@ -479,7 +469,9 @@ class EmployeeController extends Controller
             'awards'        =>  'required|max:150'
         ]);
 
-        EmployeeEducationInfo::create($validatedData);
+        $newData                =   array_prepend($validatedData,$id,'employeeId');
+
+        EmployeeEducationInfo::create($newData);
 
         return response()->json([ 'status' => 201, 'message' => 'Created' ]);
 
@@ -487,6 +479,8 @@ class EmployeeController extends Controller
 
     public function updateEducation(Request $request, $id){
 
+        $education = EmployeeEducationInfo::findOrFail($id);
+
         $validatedData = $request->validate([
             'schoolName'    =>  'required|max:150',
             'schoolAddress' =>  'required|max:150',
@@ -497,7 +491,7 @@ class EmployeeController extends Controller
             'awards'        =>  'required|max:150'
         ]);
 
-        EmployeeEducationInfo::where('employeeEducationId','=',$id)->update($validatedData);
+        $education->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
 
@@ -513,23 +507,17 @@ class EmployeeController extends Controller
 
     public function storeTraining(Request $request){
 
-        $validate = $request->validate([
-            'employeeId'    =>  'required|integer',
+        $validatedData = $request->validate([
             'trainingName'  =>  'required|max:150',
             'trainingTitle' =>  'required|max:150',
             'trainingFrom'  =>  'required|date',
             'trainingTo'    =>  'required|date'
         ]);
 
-        $data = [
-            'employeeId'    =>  $request['employeeId'],
-            'trainingName'  =>  $request['trainingName'],
-            'trainingTitle' =>  $request['trainingTitle'],
-            'trainingFrom'  =>  $request['trainingFrom'],
-            'trainingTo'    =>  $request['trainingTo']
-        ];
+        $newData                =   array_prepend($validatedData,$id,'employeeId');
 
-        EmployeeTrainingInfo::create($data);
+
+        EmployeeTrainingInfo::create($newData);
 
         return response()->json([ 'status' => 201, 'message' => 'Created' ]);
 
@@ -537,21 +525,16 @@ class EmployeeController extends Controller
 
     public function updateTraining(Request $request, $id){
 
-        $validate = $request->validate([
+        $training = EmployeeTrainingInfo::findOrFail($id);
+
+        $validatedData = $request->validate([
             'trainingName'  =>  'required|max:150',
             'trainingTitle' =>  'required|max:150',
             'trainingFrom'  =>  'required|date',
             'trainingTo'    =>  'required|date'
         ]);
 
-        $data = [
-            'trainingName'  =>  $request['trainingName'],
-            'trainingTitle' =>  $request['trainingTitle'],
-            'trainingFrom'  =>  $request['trainingFrom'],
-            'trainingTo'    =>  $request['trainingTo']
-        ];
-
-        EmployeeTrainingInfo::where('employeeTrainingId','=',$id)->update($data);
+        $training->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
 
@@ -568,21 +551,17 @@ class EmployeeController extends Controller
 
     public function storeClub(Request $request){
 
-        $validate = $request->validate([
+        $validatedData = $request->validate([
             'employeeId'        =>  'required|integer',
             'clubName'          =>  'required|max:150',
             'clubPosition'      =>  'required|max:150',
             'membershipDate'    =>  'required|date'
         ]);
 
-        $data = [
-            'employeeId'        =>  $request['employeeId'],
-            'clubName'          =>  $request['clubName'],
-            'clubPosition'      =>  $request['clubPosition'],
-            'membershipDate'    =>  $reqeust['membershipDate']
-        ];
+        $newData                =   array_prepend($validatedData,$id,'employeeId');
 
-        EmployeeClubInfo::create($data);
+
+        EmployeeClubInfo::create($newData);
 
         return response()->json([ 'status' => 201, 'message' => 'Created' ]);
 
@@ -590,19 +569,15 @@ class EmployeeController extends Controller
 
     public function updateClub(Request $request, $id){
 
-        $validate = $request->validate([
+        $club = EmployeeClubInfo::findOrFail($id);
+
+        $validatedData = $request->validate([
             'clubName'          =>  'required|max:150',
             'clubPosition'      =>  'required|max:150',
             'membershipDate'    =>  'required|date'
         ]);
-
-        $data = [
-            'clubName'          =>  $request['clubName'],
-            'clubPosition'      =>  $request['clubPosition'],
-            'membershipDate'    =>  $reqeust['membershipDate']
-        ]; 
-
-        EmployeeClubInfo::where('employeeClubId','=',$id)->update($data);
+        
+        $club->update($validatedData);
 
         return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
 

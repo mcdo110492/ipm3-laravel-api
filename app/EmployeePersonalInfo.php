@@ -30,4 +30,22 @@ class EmployeePersonalInfo extends Model
         
     }
 
+    public function setFirstNameAttribute($value) {
+
+        $this->attributes['firstName'] = ucfirst($value);       
+
+    }
+
+    public function setMiddleNameAttribute($value) {
+        
+        $this->attributes['middleName'] = ucfirst($value);       
+        
+    }
+
+    public function setLastNameAttribute($value){
+
+        $this->attributes['lastName']   =   ucfirst($value);
+
+    }
+
 }
