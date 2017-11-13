@@ -18,7 +18,7 @@ class PositionsController extends Controller
         $filter     = $request['filter'];
         
         $count      = Positions::count();
-        $get        = Positions::where($field,'LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
+        $get        = Positions::where($field,'LIKE','%'.$filter.'%')->orWhere('positioCode','LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
         
         return response()->json([ 'status' => 200, 'count' => $count, 'data' => $get ]);
         
@@ -32,19 +32,20 @@ class PositionsController extends Controller
 
     }
 
-    public function verifyPosition(Request $request){
+    public function verifyData(Request $request){
         $value = $request['keyValue'];
         $id    = $request['keyId'];
+        $keyField = $request['keyField'];
         $status = 200;
 
         if($id == 0){
-            $count = Positions::where('positionName','=',$value)->count();
+            $count = Positions::where($keyField,'=',$value)->count();
 
             ($count>0) ? $status = 422 : $status = 200;
         }
         else {
 
-            $count = Positions::where('positionName','=',$value)->where('positionId','!=',$id)->count();
+            $count = Positions::where($keyField,'=',$value)->where('positionId','!=',$id)->count();
 
             ($count>0) ? $status = 422 : $status = 200;
         }
@@ -56,10 +57,11 @@ class PositionsController extends Controller
     public function store(Request $request){
         
         $request->validate([
-            'positionName'   =>  'required|unique:positions,positionName'
+            'positionName'   =>  'required|unique:positions,positionName|max:150',
+            'positionCode'   =>  'required|unique:positions,positioCode|max:20'
         ]);
         
-        $data   =   [ 'positionName' =>  $request['positionName'] ];
+        $data   =   [ 'positionName' =>  $request['positionName'], 'positionCode' => $request['positionCode'] ];
         
         Positions::create($data);
         
@@ -70,15 +72,20 @@ class PositionsController extends Controller
     public function update(Request $request, $id){
         
         $request->validate([
-            'positionName'   =>  [ 'required',
+            'positionName'   =>  [ 'required', 'max:150',
                                    Rule::unique('positions')->ignore($id,'positionId')
             ],
+            'positionCode'   =>  [ 'required', 'max:20',
+                        Rule::unique('positions')->ignore($id,'positionId')
+            ]
+
         ]);
         
-        $data = [ 'positionName' => $request['positionName'] ];
+        $data = [ 'positionName' => $request['positionName'], 'positionCode' => $request['positionCode'] ];
         
         Positions::where('positionId','=',$id)->update($data);
         
         return response()->json([ 'status' => 200, 'message' => 'Updated']);
     }
+    
 }

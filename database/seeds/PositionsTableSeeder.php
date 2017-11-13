@@ -18,6 +18,7 @@ class PositionsTableSeeder extends Seeder
 
         DB::table('positions')->insert([
             'positionId'    =>  1,
+            'positionCode'  =>  'DR',
             'positionName'  =>  'Driver',
             'created_at'    =>  $now,
             'updated_at'    =>  $now
@@ -25,6 +26,7 @@ class PositionsTableSeeder extends Seeder
 
         DB::table('positions')->insert([
             'positionId'    =>  2,
+            'positionCode'  =>  'PLR',
             'positionName'  =>  'Paleros',
             'created_at'    =>  $now,
             'updated_at'    =>  $now
@@ -32,6 +34,7 @@ class PositionsTableSeeder extends Seeder
 
         DB::table('positions')->insert([
             'positionId'    =>  3,
+            'positionCode'  =>  'STR',
             'positionName'  =>  'Strikers',
             'created_at'    =>  $now,
             'updated_at'    =>  $now

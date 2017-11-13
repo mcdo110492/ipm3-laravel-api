@@ -11,6 +11,7 @@ class EmploymentStatus extends Model
     protected $primaryKey = 'employmentStatusId';
 
     protected $fillable = [
-        'employmentStatusName'
+        'employmentStatusName',
+        'employmentStatusCode'
     ];
 }

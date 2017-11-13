@@ -22,8 +22,7 @@ Route::group(['prefix' => 'routeAuthenticate', 'middleware' => ['jwt.auth']], fu
 
 });
 
-
-
+// Master Data
 Route::group([ 'prefix' => 'projects' ], function () {
 
     Route::get('all','ProjectsController@all');
@@ -46,7 +45,7 @@ Route::group([ 'prefix' => 'positions' ], function () {
 
     Route::post('', 'PositionsController@store' );
 
-    Route::post('verifyPosition','PositionsController@verifyPosition');
+    Route::post('verifyPosition','PositionsController@verifyData');
 
     Route::put('{id}', 'PositionsController@update' );
 
@@ -60,7 +59,7 @@ Route::group([ 'prefix' => 'employmentStatus' ], function () {
 
     Route::post('', 'EmploymentStatusController@store' );
 
-    Route::post('verify','EmploymentStatusController@verify');
+    Route::post('verify','EmploymentStatusController@verifyData');
 
     Route::put('{id}', 'EmploymentStatusController@update' );
 
@@ -74,11 +73,56 @@ Route::group([ 'prefix' => 'employeeStatus' ], function () {
 
     Route::post('', 'EmployeeStatusController@store' );
 
-    Route::post('verify','EmployeeStatusController@verify');
+    Route::post('verify','EmployeeStatusController@verifyData');
 
     Route::put('{id}', 'EmployeeStatusController@update' );
 
 });
+
+Route::group([ 'prefix' => 'units' ], function () {
+    
+    Route::get('all','UnitsController@all');
+        
+    Route::get('', 'UnitsController@index' );
+    
+    Route::post('', 'UnitsController@store' );
+    
+    Route::post('verify','UnitsController@verifyData');
+    
+    Route::put('{id}', 'UnitsController@update' );
+    
+});
+
+Route::group([ 'prefix' => 'collection/schedules' ], function () {
+    
+    Route::get('all','CollectionSchedulesController@all');
+        
+    Route::get('', 'CollectionSchedulesController@index' );
+    
+    Route::post('', 'CollectionSchedulesController@store' );
+    
+    Route::post('verify','CollectionSchedulesController@verifyData');
+    
+    Route::put('{id}', 'CollectionSchedulesController@update' );
+    
+});
+
+Route::group([ 'prefix' => 'collection/types' ], function () {
+    
+    Route::get('all','CollectionTypesController@all');
+        
+    Route::get('', 'CollectionTypesController@index' );
+    
+    Route::post('', 'CollectionTypesController@store' );
+    
+    Route::post('verify','CollectionTypesController@verifyData');
+    
+    Route::put('{id}', 'CollectionTypesController@update' );
+    
+});
+
+
+// HR
 
 Route::group(['prefix' => 'employee'], function () {
     
@@ -87,72 +131,105 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::post('verify','EmployeeController@verify');
 
-    Route::post('register','EmployeeController@store');
+    Route::post('register','EmployeeRegisterController@store');
 
 
-    Route::get('profile/{id}','EmployeeController@getProfile');
+    Route::get('personal/{id}','EmployeePersonalController@getPersonal');
 
-    Route::put('profile/{id}','EmployeeController@updateProfile');
+    Route::put('personal/{id}','EmployeePersonalController@updatePersonal');
 
 
-    Route::get('employment/{id}','EmployeeController@getEmployment');
+    Route::get('employment/{id}','EmployeeEmploymentController@getEmployment');
     
-    Route::put('employment/{id}','EmployeeController@updateEmployment');
+    Route::put('employment/{id}','EmployeeEmploymentController@updateEmployment');
 
 
-    Route::get('contact/{id}','EmployeeController@getContact');
+    Route::get('contact/{id}','EmployeeContactController@getContact');
 
-    Route::put('contact/{id}','EmployeeController@updateContact');
+    Route::put('contact/{id}','EmployeeContactController@updateContact');
 
 
-    Route::get('health/{id}','EmployeeController@getHealth');
+    Route::get('health/{id}','EmployeeHealthController@getHealth');
     
-    Route::put('health/{id}','EmployeeController@updateHealth');
+    Route::put('health/{id}','EmployeeHealthController@updateHealth');
 
 
-    Route::get('government/{id}','EmployeeController@getGovernment');
+    Route::get('government/{id}','EmployeeGovernmentController@getGovernment');
     
-    Route::put('government/{id}','EmployeeController@updateGovernment');
+    Route::put('government/{id}','EmployeeGovernmentController@updateGovernment');
 
 
-    Route::get('account/{id}','EmployeeController@getAccount');
+    Route::get('account/{id}','EmployeeAccountController@getAccount');
 
-    Route::put('username/{id}','EmployeeController@updateAccountUsername');
+    Route::post('verify/username','EmployeeAccountController@verifyUsername');
 
-    Route::put('account/status/{id}','EmployeeController@updateAccountStatus');
+    Route::put('username/{id}','EmployeeAccountController@updateAccountUsername');
 
-    Route::put('account/reset/{id}','EmployeeController@updateAccountResetPassword');
+    Route::put('account/status/{id}','EmployeeAccountController@updateAccountStatus');
 
-
-    Route::get('license/{id}','EmployeeController@getLicenses');
-
-    Route::post('license/verify','EmployeeController@verifyLicenses');
-
-    Route::post('license/{id}','EmployeeController@storeLicense');
-
-    Route::put('license/{id}','EmployeeController@updateLicense');
+    Route::put('account/reset/{id}','EmployeeAccountController@updateAccountResetPassword');
 
 
-    Route::get('education/{id}','EmployeeController@getEducations');
+    Route::get('license/{id}','EmployeeLicenseController@getLicenses');
 
-    Route::post('education/{id}','EmployeeController@storeEducation');
+    Route::post('license/verify','EmployeeLicenseController@verifyLicenses');
 
-    Route::put('education/{id}','EmployeeController@updateEducation');
+    Route::post('license/{id}','EmployeeLicenseController@storeLicense');
 
-
-    Route::get('training/{id}','EmployeeController@getTrainings');
-
-    Route::post('training/{id}','EmployeeController@storeTraining');
-
-    Route::put('training/{id}','EmployeeController@updateTraining');
+    Route::put('license/{id}','EmployeeLicenseController@updateLicense');
 
 
-    Route::get('club/{id}','EmployeeController@getClubs');
+    Route::get('education/{id}','EmployeeEducationController@getEducations');
 
-    Route::post('club/{id}','EmployeeController@storeClub');
+    Route::post('education/{id}','EmployeeEducationController@storeEducation');
 
-    Route::put('club/{id}','EmployeeController@updateClub');
+    Route::put('education/{id}','EmployeeEducationController@updateEducation');
 
+
+    Route::get('training/{id}','EmployeeTrainingController@getTrainings');
+
+    Route::post('training/{id}','EmployeeTrainingController@storeTraining');
+
+    Route::put('training/{id}','EmployeeTrainingController@updateTraining');
+
+
+    Route::get('club/{id}','EmployeeClubController@getClubs');
+
+    Route::post('club/{id}','EmployeeClubController@storeClub');
+
+    Route::put('club/{id}','EmployeeClubController@updateClub');
+
+});
+
+
+// Equipment
+Route::group([ 'prefix' => 'equipments' ], function () {
+    
+    Route::get('all','EquipmentsController@all');
+        
+    Route::get('', 'EquipmentsController@index' );
+    
+    Route::post('', 'EquipmentsController@store' );
+    
+    Route::post('verify','EquipmentsController@verifyData');
+    
+    Route::put('{id}', 'EquipmentsController@update' );
+    
+});
+
+// GPS
+Route::group([ 'prefix' => 'shifts' ], function () {
+    
+    Route::get('all','ShiftsController@all');
+        
+    Route::get('', 'ShiftsController@index' );
+    
+    Route::post('', 'ShiftsController@store' );
+    
+    Route::post('verify','ShiftsController@verifyData');
+    
+    Route::put('{id}', 'ShiftsController@update' );
+    
 });
 
 

@@ -11,6 +11,7 @@ class Positions extends Model
     protected $primaryKey = 'positionId';
 
     protected $fillable = [
-        'positionName'
+        'positionName',
+        'positionCode'
     ];
 }

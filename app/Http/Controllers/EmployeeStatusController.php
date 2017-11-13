@@ -19,7 +19,7 @@ class EmployeeStatusController extends Controller
         $filter     = $request['filter'];
         
         $count      = EmployeeStatus::count();
-        $get        = EmployeeStatus::where($field,'LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
+        $get        = EmployeeStatus::where($field,'LIKE','%'.$filter.'%')->orWhere('employeeStatusCode','LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
         
         return response()->json([ 'status' => 200, 'count' => $count, 'data' => $get ]);
         
@@ -32,19 +32,20 @@ class EmployeeStatusController extends Controller
         return response()->json([ 'status' => 200, 'data' => $get ]);
     }
 
-    public function verify(Request $request){
+    public function verifyData(Request $request){
         $value = $request['keyValue'];
         $id    = $request['keyId'];
+        $keyField = $request['keyField'];
         $status = 200;
 
         if($id == 0){
-            $count = EmployeeStatus::where('employeeStatusName','=',$value)->count();
+            $count = EmployeeStatus::where($keyField,'=',$value)->count();
 
             ($count>0) ? $status = 422 : $status = 200;
         }
         else {
 
-            $count = EmployeeStatus::where('employeeStatusName','=',$value)->where('employeeStatusId','!=',$id)->count();
+            $count = EmployeeStatus::where($keyField,'=',$value)->where('employeeStatusId','!=',$id)->count();
 
             ($count>0) ? $status = 422 : $status = 200;
         }
@@ -56,10 +57,11 @@ class EmployeeStatusController extends Controller
     public function store(Request $request){
         
         $request->validate([
-            'employeeStatusName'   =>  'required|unique:employeeStatus,employeeStatusName'
+            'employeeStatusName'   =>  'required|max:150|unique:employeeStatus,employeeStatusName',
+            'employeeStatusCode'   =>  'required|max:20|unique:employeeStatus,employeeStatusCode'
         ]);
         
-        $data   =   [ 'employeeStatusName' =>  $request['employeeStatusName'] ];
+        $data   =   [ 'employeeStatusName' =>  $request['employeeStatusName'] , 'employeeStatusCode' => $request['employeeStatusCode']];
         
         EmployeeStatus::create($data);
         
@@ -70,12 +72,15 @@ class EmployeeStatusController extends Controller
     public function update(Request $request, $id){
         
         $request->validate([
-            'employeeStatusName'   =>  [ 'required',
+            'employeeStatusName'   =>  [ 'required', 'max:150',
                                             Rule::unique('employeeStatus')->ignore($id,'employeeStatusId')
             ],
+            'employeeStatusCode'   =>  [ 'required', 'max:20',
+                        Rule::unique('employeeStatus')->ignore($id,'employeeStatusId')
+            ]
         ]);
         
-        $data = [ 'employeeStatusName' => $request['employeeStatusName'] ];
+        $data = [ 'employeeStatusName' => $request['employeeStatusName'], 'employeeStatusCode' => $request['employeeStatusCode'] ];
         
         EmployeeStatus::where('employeeStatusId','=',$id)->update($data);
         

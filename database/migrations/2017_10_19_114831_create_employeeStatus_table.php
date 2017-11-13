@@ -15,6 +15,7 @@ class CreateEmployeeStatusTable extends Migration
     {
         Schema::create('employeeStatus', function (Blueprint $table) {
             $table->increments('employeeStatusId');
+            $table->string('employeeStatusCode',20)->unique();
             $table->string('employeeStatusName',150)->unique();
             $table->timestamps();
         });

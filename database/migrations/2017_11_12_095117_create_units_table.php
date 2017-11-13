@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmploymentStatusTable extends Migration
+class CreateUnitsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateEmploymentStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('employmentStatus', function (Blueprint $table) {
-            $table->increments('employmentStatusId');
-            $table->string('employmentStatusCode',20)->unique();
-            $table->string('employmentStatusName',150)->unique();
+        Schema::create('units', function (Blueprint $table) {
+            $table->increments('unitId');
+            $table->string('unitCode',20)->unique();
+            $table->string('unitName',150)->unique();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateEmploymentStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employmentStatus');
+        Schema::dropIfExists('units');
     }
 }

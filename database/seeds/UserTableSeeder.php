@@ -25,5 +25,15 @@ class UserTableSeeder extends Seeder
             'created_at'    =>  $now,
             'updated_at'    =>  $now
         ]);
+
+        DB::table('users')->insert([
+            'username'      =>  'hradmin',
+            'password'      =>  Hash::make('hradmin'),
+            'profileName'   =>  'Hr Admin',
+            'role'          =>  2,
+            'projectId'     =>  1,
+            'created_at'    =>  $now,
+            'updated_at'    =>  $now
+        ]);
     }
 }
