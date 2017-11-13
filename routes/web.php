@@ -226,8 +226,6 @@ Route::group([ 'prefix' => 'shifts' ], function () {
     
     Route::post('', 'ShiftsController@store' );
     
-    Route::post('verify','ShiftsController@verifyData');
-    
     Route::put('{id}', 'ShiftsController@update' );
     
 });

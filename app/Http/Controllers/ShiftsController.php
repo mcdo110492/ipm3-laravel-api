@@ -61,28 +61,6 @@ class ShiftsController extends Controller
                     
         }
                     
-        public function verifyData(Request $request) {
-            
-            $value      = $request['keyValue'];
-            $id         = $request['keyId'];
-            $keyField   = $request['keyField'];
-            $project    = ($this->role == 1) ? $request['projectId'] : $this->projectId;  
-            $status = 200;
-                    
-            if($id == 0){
-                $count = Shifts::where($keyField,'=',$value)->where('projectId','=',$project)->count();
-                    
-                ($count>0) ? $status = 422 : $status = 200;
-            }
-            else {
-                    
-                $count = Shifts::where($keyField,'=',$value)->where('shiftId','!=',$id)->where('projectId','=',$project)->count();
-                    
-                ($count>0) ? $status = 422 : $status = 200;
-            }
-                    
-            return response()->json(compact('status'));
-        }
                     
                      
         public function store(Request $request){
