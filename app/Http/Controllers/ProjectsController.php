@@ -56,8 +56,8 @@ class ProjectsController extends Controller
     public function store(Request $request){
 
         $request->validate([
-            'projectCode'   =>  'required|unique:projects,projectCode',
-            'projectName'   =>  'required'
+            'projectCode'   =>  'required|max:20|unique:projects,projectCode',
+            'projectName'   =>  'required|max:150'
         ]);
 
         $data   =   [ 'projectCode' =>  $request['projectCode'] , 'projectName' =>  $request['projectName'] ];
@@ -71,10 +71,10 @@ class ProjectsController extends Controller
     public function update(Request $request, $id){
 
         $request->validate([
-            'projectCode'   =>  [ 'required',
+            'projectCode'   =>  [ 'required','max:20',
                                    Rule::unique('projects')->ignore($id,'projectId')
             ],
-            'projectName'   =>  'required'
+            'projectName'   =>  'required|max:150'
         ]);
 
         $data = [ 'projectCode' => $request['projectCode'] , 'projectName' => $request['projectName'] ];

@@ -8,6 +8,7 @@ use Ipm\CollectionTypes;
 
 class CollectionTypesController extends Controller
 {
+
     public function index(Request $request) {
         
         $limit      = $request['limit'];
@@ -57,8 +58,8 @@ class CollectionTypesController extends Controller
     public function store(Request $request){
                 
         $request->validate([
-            'collectionTypeCode'      =>  'required|unique:collectionTypes,collectionTypeCode|max:20',
-            'collectionTypeName'      =>  'required|unique:collectionTypes,collectionTypeName|max:150'
+            'collectionTypeCode'      =>  'required|max:20|unique:collectionTypes,collectionTypeCode',
+            'collectionTypeName'      =>  'required|max:150|unique:collectionTypes,collectionTypeName'
         ]);
                 
         $data   =   [ 'collectionTypeCode' =>  $request['collectionTypeCode'] , 'collectionTypeName' =>  $request['collectionTypeName'] ];
@@ -85,4 +86,5 @@ class CollectionTypesController extends Controller
                 
         return response()->json([ 'status' => 200, 'message' => 'Updated']);
     }
+
 }

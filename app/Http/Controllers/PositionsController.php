@@ -57,8 +57,8 @@ class PositionsController extends Controller
     public function store(Request $request){
         
         $request->validate([
-            'positionName'   =>  'required|unique:positions,positionName|max:150',
-            'positionCode'   =>  'required|unique:positions,positioCode|max:20'
+            'positionName'   =>  'required|max:150|unique:positions,positionName',
+            'positionCode'   =>  'required|max:20|unique:positions,positioCode'
         ]);
         
         $data   =   [ 'positionName' =>  $request['positionName'], 'positionCode' => $request['positionCode'] ];

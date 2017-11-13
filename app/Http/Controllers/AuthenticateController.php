@@ -2,8 +2,10 @@
 
 namespace Ipm\Http\Controllers;
 
-use Ipm\User;
 use Illuminate\Http\Request;
+
+use Ipm\User;
+
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 

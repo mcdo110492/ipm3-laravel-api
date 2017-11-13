@@ -23,9 +23,9 @@ class EmployeeHealthController extends Controller
         $health = EmployeeHealthInfo::findOrFail($id);
         
         $validatedData = $request->validate([
-            'height'    =>  'required',
-            'weight'    =>  'required',
-            'bloodType' =>  'required'
+            'height'    =>  'required|max:20',
+            'weight'    =>  'required|max:20',
+            'bloodType' =>  'required|max:20'
         ]);
         
         

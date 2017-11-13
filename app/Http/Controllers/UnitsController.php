@@ -59,8 +59,8 @@ class UnitsController extends Controller
     public function store(Request $request){
         
         $request->validate([
-            'unitCode'      =>  'required|unique:units,unitCode|max:20',
-            'unitName'      =>  'required|unique:units,unitName|max:150'
+            'unitCode'      =>  'required|max:20|unique:units,unitCode',
+            'unitName'      =>  'required|max:150|unique:units,unitName'
         ]);
         
         $data   =   [ 'unitCode' =>  $request['unitCode'] , 'unitName' =>  $request['unitName'] ];

@@ -45,8 +45,8 @@ class EmployeeLicenseController extends Controller
     public function storeLicense(Request $request, $id) {
         
         $validatedData = $request->validate([
-            'licenseNumber'     =>  'required|unique:employeeLicenseInfo,licenseNumber',
-            'licenseType'       =>  'required',
+            'licenseNumber'     =>  'required|max:20|unique:employeeLicenseInfo,licenseNumber',
+            'licenseType'       =>  'required|max:20',
             'dateIssued'        =>  'required|date',
             'dateExpiry'        =>  'required|date'
         ]);
@@ -64,10 +64,10 @@ class EmployeeLicenseController extends Controller
         $license = EmployeeLicenseInfo::findOrFail($id);
         
         $validatedData = $request->validate([
-            'licenseNumber' =>  [ 'required',
+            'licenseNumber' =>  [ 'required','max:20',
                                    Rule::unique('employeeLicenseInfo')->ignore($id,'employeeLicenseId')
             ],
-            'licenseType'   =>  'required',
+            'licenseType'   =>  'required|max:20',
             'dateIssued'    =>  'required|date',
             'dateExpiry'    =>  'required|date'
         ]);

@@ -33,20 +33,20 @@ class EmployeeRegisterController extends Controller
     public function store(Request $request){
         
         $request->validate([
-            'employeeNumber'        => 'required|unique:employeePersonalInfo,employeeNumber',
-            'firstName'             => 'required',
-            'middleName'            => 'required',
-            'lastName'              => 'required',
-            'birthday'              => 'required',
-            'placeOfBirth'          => 'required',
-            'civilStatus'           => 'required',
-            'citizenship'           => 'required',
-            'religion'              => 'required',
+            'employeeNumber'        => 'required|max:20|unique:employeePersonalInfo,employeeNumber',
+            'firstName'             => 'required|max:150',
+            'middleName'            => 'required|max:150',
+            'lastName'              => 'required|max:150',
+            'birthday'              => 'required|date',
+            'placeOfBirth'          => 'required|max:150',
+            'civilStatus'           => 'required|max:50',
+            'citizenship'           => 'required|max:50',
+            'religion'              => 'required|max:150',
             'positionId'            => 'required',
             'employeeStatusId'      => 'required',
             'employmentStatusId'    => 'required',
-            'contractStart'         => 'required',
-            'contractEnd'           => 'required'
+            'contractStart'         => 'required|date',
+            'contractEnd'           => 'required|date'
         ]);
 
         

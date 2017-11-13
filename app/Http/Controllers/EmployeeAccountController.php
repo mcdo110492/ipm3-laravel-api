@@ -46,7 +46,7 @@ class EmployeeAccountController extends Controller
         $account = EmployeeAccountInfo::findOrFail($id);
         
         $validatedData = $request->validate([
-            'username'  =>  [ 'required',
+            'username'  =>  [ 'required','max:50',
                               Rule::unique('employeeAccountInfo')->ignore($id,'employeeAccountId')
             ]
         ]);

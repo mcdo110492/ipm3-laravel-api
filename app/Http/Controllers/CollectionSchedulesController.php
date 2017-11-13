@@ -4,6 +4,7 @@ namespace Ipm\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+
 use Ipm\CollectionSchedules;
 
 class CollectionSchedulesController extends Controller
@@ -57,8 +58,8 @@ class CollectionSchedulesController extends Controller
     public function store(Request $request){
                 
         $request->validate([
-            'collectionScheduleCode'      =>  'required|unique:collectionSchedules,collectionScheduleCode|max:20',
-            'collectionScheduleName'      =>  'required|unique:collectionSchedules,collectionScheduleName|max:150'
+            'collectionScheduleCode'      =>  'required|max:20|unique:collectionSchedules,collectionScheduleCode',
+            'collectionScheduleName'      =>  'required|max:150|unique:collectionSchedules,collectionScheduleName'
         ]);
                 
         $data   =   [ 'collectionScheduleCode' =>  $request['collectionScheduleCode'] , 'collectionScheduleName' =>  $request['collectionScheduleName'] ];
@@ -85,4 +86,5 @@ class CollectionSchedulesController extends Controller
                 
         return response()->json([ 'status' => 200, 'message' => 'Updated']);
     }
+    
 }

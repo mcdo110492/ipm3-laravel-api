@@ -58,16 +58,16 @@ class EmployeePersonalController extends Controller
         $personal = EmployeePersonalInfo::findOrFail($id);
         
         $validatedData = $request->validate([
-            'employeeNumber'    =>  ['required',
+            'employeeNumber'    =>  ['required','max:20',
                                      Rule::unique('employeePersonalInfo')->ignore($id,'employeeId')],
-            'firstName'         =>  'required',
-            'middleName'        =>  'required',
-            'lastName'          =>  'required',
-            'birthday'          =>  'required',
-            'placeOfBirth'      =>  'required',
-            'civilStatus'       =>  'required',
-            'citizenship'       =>  'required',
-            'religion'          =>  'required'
+            'firstName'         =>  'required|max:150',
+            'middleName'        =>  'required|max:150',
+            'lastName'          =>  'required|max:150',
+            'birthday'          =>  'required|date',
+            'placeOfBirth'      =>  'required|max:150',
+            'civilStatus'       =>  'required|max:50',
+            'citizenship'       =>  'required|max:50',
+            'religion'          =>  'required|max:150'
         ]);
                 
         

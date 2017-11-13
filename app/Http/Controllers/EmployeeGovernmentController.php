@@ -25,10 +25,10 @@ class EmployeeGovernmentController extends Controller
         $government = EmployeeGovernmentInfo::findOrFail($id);
         
         $validatedData = $request->validate([
-            'sssNumber'         =>  'required',
-            'pagIbigNumber'     =>  'required',
-            'philHealthNumber'  =>  'required',
-            'tinNumber'         =>  'required'
+            'sssNumber'         =>  'required|max:20',
+            'pagIbigNumber'     =>  'required|max:20',
+            'philHealthNumber'  =>  'required|max:20',
+            'tinNumber'         =>  'required|max:20'
         ]);
         
         $government->update($validatedData);

@@ -66,17 +66,16 @@ class EquipmentsController extends Controller
         $value      = $request['keyValue'];
         $id         = $request['keyId'];
         $keyField   = $request['keyField'];
-        $project    = ($this->role == 1) ? $request['projectId'] : $this->projectId;  
         $status = 200;
                 
         if($id == 0){
-            $count = Equipments::where($keyField,'=',$value)->where('projectId','=',$project)->count();
+            $count = Equipments::where($keyField,'=',$value)->count();
                 
             ($count>0) ? $status = 422 : $status = 200;
         }
         else {
                 
-            $count = Equipments::where($keyField,'=',$value)->where('equipmentId','!=',$id)->where('projectId','=',$project)->count();
+            $count = Equipments::where($keyField,'=',$value)->where('equipmentId','!=',$id)->count();
                 
             ($count>0) ? $status = 422 : $status = 200;
         }
