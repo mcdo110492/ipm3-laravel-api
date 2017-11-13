@@ -16,7 +16,7 @@ class CreateEquipmentsTable extends Migration
         Schema::create('equipments', function (Blueprint $table) {
             $table->increments('equipmentId');
             $table->string('equipmentCode',20)->unique();
-            $table->string('bodyNumber',20)->unique();
+            $table->string('bodyNumber',20);
             $table->string('model',150);
             $table->string('capacity',50);
             $table->string('plateNo',50)->unique();
