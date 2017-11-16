@@ -62,9 +62,10 @@ class ProjectsController extends Controller
 
         $data   =   [ 'projectCode' =>  $request['projectCode'] , 'projectName' =>  $request['projectName'] ];
 
-        Projects::create($data);
+       $createdData = Projects::create($data);
 
-        return response()->json([ 'status'  =>  201 , 'message'   =>  'Created' ]);
+
+        return response()->json([ 'status'  =>  201 , 'message'   =>  'Created', 'createdData' => $createdData ]);
 
     }
 
