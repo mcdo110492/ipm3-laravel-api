@@ -45,7 +45,7 @@ class EmploymentStatusController extends Controller
         }
         else {
 
-            $count = EmploymentStatus::where($keyField,'=',$value)->where('emloymentStatusId','!=',$id)->count();
+            $count = EmploymentStatus::where($keyField,'=',$value)->where('employmentStatusId','!=',$id)->count();
 
             ($count>0) ? $status = 422 : $status = 200;
         }
