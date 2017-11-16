@@ -18,7 +18,7 @@ class PositionsController extends Controller
         $filter     = $request['filter'];
         
         $count      = Positions::count();
-        $get        = Positions::where($field,'LIKE','%'.$filter.'%')->orWhere('positioCode','LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
+        $get        = Positions::where($field,'LIKE','%'.$filter.'%')->orWhere('positionCode','LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
         
         return response()->json([ 'status' => 200, 'count' => $count, 'data' => $get ]);
         
@@ -58,7 +58,7 @@ class PositionsController extends Controller
         
         $request->validate([
             'positionName'   =>  'required|max:150|unique:positions,positionName',
-            'positionCode'   =>  'required|max:20|unique:positions,positioCode'
+            'positionCode'   =>  'required|max:20|unique:positions,positionCode'
         ]);
         
         $data   =   [ 'positionName' =>  $request['positionName'], 'positionCode' => $request['positionCode'] ];
