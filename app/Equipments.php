@@ -21,4 +21,6 @@ class Equipments extends Model
         'unitId',
         'projectId'
     ];
+
+
 }

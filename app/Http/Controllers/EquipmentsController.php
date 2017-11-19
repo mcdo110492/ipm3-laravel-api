@@ -4,6 +4,7 @@ namespace Ipm\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Ipm\Equipments;
 
 use JWTAuth;
@@ -135,8 +136,35 @@ class EquipmentsController extends Controller
                     ];
                 
         Equipments::where('equipmentId','=',$id)->update($data);
+
+        $updatedData = DB::table('equipments as e')
+                       ->leftJoin('units as u','u.unitId','=','e.unitId')
+                       ->where('e.equipmentId','=',$id)
+                       ->get()
+                       ->first();
                 
-        return response()->json([ 'status' => 200, 'message' => 'Updated']);
+        return response()->json([ 'status' => 200, 'message' => 'Updated', 'updatedData' => $updatedData]);
+    }
+
+    public function changeStatus(Request $request, $id){
+
+        $request->validate([
+            'status'    => 'required'
+        ]);
+
+        $data = [
+            'status'    =>  $request['status']
+        ];
+
+        Equipments::where('equipmentId','=',$id)->update($data);
+
+        $updatedData = DB::table('equipments as e')
+        ->leftJoin('units as u','u.unitId','=','e.unitId')
+        ->where('e.equipmentId','=',$id)
+        ->get()
+        ->first();
+ 
+        return response()->json([ 'status' => 200, 'message' => 'Updated', 'updatedData' => $updatedData]);
     }
     
 }

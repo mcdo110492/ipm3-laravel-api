@@ -214,6 +214,8 @@ Route::group([ 'prefix' => 'equipments' ], function () {
     Route::post('verify','EquipmentsController@verifyData');
     
     Route::put('{id}', 'EquipmentsController@update' );
+
+    Route::put('status/{id}', 'EquipmentsController@changeStatus' );
     
 });
 
