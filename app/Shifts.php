@@ -3,6 +3,7 @@
 namespace Ipm;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Shifts extends Model
 {
@@ -20,4 +21,12 @@ class Shifts extends Model
         'routeFile',
         'projectId'
     ];
+
+
+    public function setShiftTimeAttribute($value){
+        
+        $this->attributes['shiftTime'] = Carbon::parse($value);
+                
+    }
+
 }

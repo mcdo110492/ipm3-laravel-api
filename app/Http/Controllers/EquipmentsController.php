@@ -56,7 +56,7 @@ class EquipmentsController extends Controller
         
     public function all(Request $request) {
         $project = ($this->role == 1) ? $request['projectId'] : $this->projectId;
-        $get = Equipments::where('projectId','=',$project)->all();
+        $get = Equipments::where('projectId','=',$project)->get();
                         
         return response()->json([ 'status' => 200, 'data' => $get ]);
                 
