@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Ipm\Shifts;
 
+use Storage;
 use JWTAuth;
 
 class ShiftsController extends Controller
@@ -129,6 +130,32 @@ class ShiftsController extends Controller
                         ->first();
                     
             return response()->json([ 'status' => 200, 'message' => 'Updated', 'updatedData' => $get]);
+        }
+
+        public function upload(Request $request, $id){
+
+            if(!$request->hasFile('routeFile')){
+
+                return response()->json(['status' => 404, 'message' => 'File not found in the request.']);
+            }
+
+            if($request->file('routeFile')->isValid()){
+
+                $request->validate([
+                    'routeFile' =>  'required|max:2000|mimes:jpeg,jpg'
+                ]);
+                
+                // This is an ftp server in the hostgator to save the file into the hostgator
+                //$path = $request->routeFile->store('routes','ftp');
+
+                $path = $request->routeFile->store('routes');
+
+                return response()->json(['status' => 200, 'message' => 'File Upload Success', 'uploadedFilePath' => $path ]);
+            }
+            
+
+            return response()->json(['status' => 500, 'message' => "There' s an error while uploading your file."]);
+
         }
         
 
