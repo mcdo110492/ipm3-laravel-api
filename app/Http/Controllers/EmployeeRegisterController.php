@@ -45,6 +45,7 @@ class EmployeeRegisterController extends Controller
             'positionId'            => 'required',
             'employeeStatusId'      => 'required',
             'employmentStatusId'    => 'required',
+            'dateHired'             => 'required|date',
             'contractStart'         => 'required|date',
             'contractEnd'           => 'required|date'
         ]);
@@ -79,6 +80,7 @@ class EmployeeRegisterController extends Controller
                 'positionId'            =>  $request['positionId'],
                 'employeeStatusId'      =>  $request['employeeStatusId'],
                 'employmentStatusId'    =>  $request['employmentStatusId'],
+                'dateHired'             =>  $request['dateHired'],
                 'contractStart'         =>  $request['contractStart'],
                 'contractEnd'           =>  $request['contractEnd'],
                 'salary'                =>  0.00,
