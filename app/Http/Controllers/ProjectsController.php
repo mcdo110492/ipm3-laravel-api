@@ -17,8 +17,9 @@ class ProjectsController extends Controller
         $field      = $request['field'];
         $filter     = $request['filter'];
 
-        $count      = Projects::count();
-        $get        = Projects::where($field,'LIKE','%'.$filter.'%')->orWhere('projectName','LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
+        $query      = Projects::where($field,'LIKE','%'.$filter.'%')->orWhere('projectName','LIKE','%'.$filter.'%');
+        $count      = $query->count();
+        $get        = $query->take($limit)->skip($offset)->orderBy($field,$order)->get();
 
         return response()->json([ 'status' => 200, 'count' => $count, 'data' => $get ]);
 
@@ -71,6 +72,8 @@ class ProjectsController extends Controller
 
     public function update(Request $request, $id){
 
+        $project = Projects::findOrFail($id);
+
         $request->validate([
             'projectCode'   =>  [ 'required','max:20',
                                    Rule::unique('projects')->ignore($id,'projectId')
@@ -80,9 +83,9 @@ class ProjectsController extends Controller
 
         $data = [ 'projectCode' => $request['projectCode'] , 'projectName' => $request['projectName'] ];
 
-        Projects::where('projectId','=',$id)->update($data);
+       $project->update($data);
 
-        return response()->json([ 'status' => 200, 'message' => 'Updated']);
+        return response()->json([ 'status' => 200, 'message' => 'Updated', 'createdData' => $project]);
     }
 
 }

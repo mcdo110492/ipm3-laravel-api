@@ -17,8 +17,9 @@ class PositionsController extends Controller
         $field      = $request['field'];
         $filter     = $request['filter'];
         
-        $count      = Positions::count();
-        $get        = Positions::where($field,'LIKE','%'.$filter.'%')->orWhere('positionCode','LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
+        $query      = Positions::where($field,'LIKE','%'.$filter.'%')->orWhere('positionCode','LIKE','%'.$filter.'%');
+        $count      = $query->count();
+        $get        = $query->take($limit)->skip($offset)->orderBy($field,$order)->get();
         
         return response()->json([ 'status' => 200, 'count' => $count, 'data' => $get ]);
         
@@ -70,7 +71,7 @@ class PositionsController extends Controller
     }
         
     public function update(Request $request, $id){
-        
+        $position = Positions::findorFail($id);
         $request->validate([
             'positionName'   =>  [ 'required', 'max:150',
                                    Rule::unique('positions')->ignore($id,'positionId')
@@ -83,9 +84,9 @@ class PositionsController extends Controller
         
         $data = [ 'positionName' => $request['positionName'], 'positionCode' => $request['positionCode'] ];
         
-        Positions::where('positionId','=',$id)->update($data);
+        $position->update($data);
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated']);
+        return response()->json([ 'status' => 200, 'message' => 'Updated','createdData' => $position]);
     }
     
 }

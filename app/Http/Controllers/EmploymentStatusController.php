@@ -17,8 +17,9 @@ class EmploymentStatusController extends Controller
         $field      = $request['field'];
         $filter     = $request['filter'];
         
-        $count      = EmploymentStatus::count();
-        $get        = EmploymentStatus::where($field,'LIKE','%'.$filter.'%')->orWhere('employmentStatusCode','LIKE','%'.$filter.'%')->take($limit)->skip($offset)->orderBy($field,$order)->get();
+        $query      = EmploymentStatus::where($field,'LIKE','%'.$filter.'%')->orWhere('employmentStatusCode','LIKE','%'.$filter.'%');
+        $count      = $query->count();
+        $get        = $query->take($limit)->skip($offset)->orderBy($field,$order)->get();
         
         return response()->json([ 'status' => 200, 'count' => $count, 'data' => $get ]);
         
@@ -71,6 +72,8 @@ class EmploymentStatusController extends Controller
         
     public function update(Request $request, $id){
         
+        $employmentStatus = EmploymentStatus::findorFail($id);
+
         $request->validate([
             'employmentStatusName'   =>  [ 'required', 'max:150',
                                             Rule::unique('employmentStatus')->ignore($id,'employmentStatusId')
@@ -82,8 +85,8 @@ class EmploymentStatusController extends Controller
         
         $data = [ 'employmentStatusName' => $request['employmentStatusName'], 'employmentStatusCode' => $request['employmentStatusCode'] ];
         
-        EmploymentStatus::where('employmentStatusId','=',$id)->update($data);
+        $employmentStatus->update($data);
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated']);
+        return response()->json([ 'status' => 200, 'message' => 'Updated','createdData' => $employmentStatus]);
     }
 }

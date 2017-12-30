@@ -45,7 +45,7 @@ Route::group([ 'prefix' => 'positions' ], function () {
 
     Route::post('', 'PositionsController@store' );
 
-    Route::post('verifyPosition','PositionsController@verifyData');
+    Route::post('verify','PositionsController@verifyData');
 
     Route::put('{id}', 'PositionsController@update' );
 
