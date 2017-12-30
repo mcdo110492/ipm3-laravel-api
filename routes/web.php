@@ -51,7 +51,7 @@ Route::group([ 'prefix' => 'positions' ], function () {
 
 });
 
-Route::group([ 'prefix' => 'employmentStatus' ], function () {
+Route::group([ 'prefix' => 'employment/status' ], function () {
     
     Route::get('all','EmploymentStatusController@all');
 
@@ -65,7 +65,7 @@ Route::group([ 'prefix' => 'employmentStatus' ], function () {
 
 });
 
-Route::group([ 'prefix' => 'employeeStatus' ], function () {
+Route::group([ 'prefix' => 'employee/status' ], function () {
 
     Route::get('all','EmployeeStatusController@all');
     
