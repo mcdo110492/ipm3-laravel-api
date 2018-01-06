@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCollectionTypesTable extends Migration
+class CreateContractTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateCollectionTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('collectionTypes', function (Blueprint $table) {
-            $table->increments('collectionTypeId');
-            $table->string('collectionTypeCode',20)->unique();
-            $table->string('collectionTypeName',150)->unique();
+        Schema::create('contractTypes', function (Blueprint $table) {
+            $table->increments('contractTypeId');
+            $table->string('contractTypeCode',20)->unique();
+            $table->string('contractTypeName',150)->unique();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateCollectionTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('collectionTypes');
+        Schema::dropIfExists('contractTypes');
     }
 }

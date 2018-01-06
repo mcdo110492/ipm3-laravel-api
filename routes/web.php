@@ -79,46 +79,32 @@ Route::group([ 'prefix' => 'employee/status' ], function () {
 
 });
 
-Route::group([ 'prefix' => 'units' ], function () {
+Route::group([ 'prefix' => 'contract/types' ], function () {
+
+    Route::get('all','ContractTypesController@all');
     
-    Route::get('all','UnitsController@all');
-        
-    Route::get('', 'UnitsController@index' );
-    
-    Route::post('', 'UnitsController@store' );
-    
-    Route::post('verify','UnitsController@verifyData');
-    
-    Route::put('{id}', 'UnitsController@update' );
-    
+    Route::get('', 'ContractTypesController@index' );
+
+    Route::post('', 'ContractTypesController@store' );
+
+    Route::post('verify','ContractTypesController@verifyData');
+
+    Route::put('{id}', 'ContractTypesController@update' );
+
 });
 
-Route::group([ 'prefix' => 'collection/schedules' ], function () {
-    
-    Route::get('all','CollectionSchedulesController@all');
-        
-    Route::get('', 'CollectionSchedulesController@index' );
-    
-    Route::post('', 'CollectionSchedulesController@store' );
-    
-    Route::post('verify','CollectionSchedulesController@verifyData');
-    
-    Route::put('{id}', 'CollectionSchedulesController@update' );
-    
-});
+Route::group([ 'prefix' => 'salary/types' ], function () {
 
-Route::group([ 'prefix' => 'collection/types' ], function () {
+    Route::get('all','SalaryTypesController@all');
     
-    Route::get('all','CollectionTypesController@all');
-        
-    Route::get('', 'CollectionTypesController@index' );
-    
-    Route::post('', 'CollectionTypesController@store' );
-    
-    Route::post('verify','CollectionTypesController@verifyData');
-    
-    Route::put('{id}', 'CollectionTypesController@update' );
-    
+    Route::get('', 'SalaryTypesController@index' );
+
+    Route::post('', 'SalaryTypesController@store' );
+
+    Route::post('verify','SalaryTypesController@verifyData');
+
+    Route::put('{id}', 'SalaryTypesController@update' );
+
 });
 
 
@@ -179,13 +165,6 @@ Route::group(['prefix' => 'employee'], function () {
     Route::put('license/{id}','EmployeeLicenseController@updateLicense');
 
 
-    Route::get('education/{id}','EmployeeEducationController@getEducations');
-
-    Route::post('education/{id}','EmployeeEducationController@storeEducation');
-
-    Route::put('education/{id}','EmployeeEducationController@updateEducation');
-
-
     Route::get('training/{id}','EmployeeTrainingController@getTrainings');
 
     Route::post('training/{id}','EmployeeTrainingController@storeTraining');
@@ -199,39 +178,46 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::put('club/{id}','EmployeeClubController@updateClub');
 
-});
+
+    Route::get('compensations/{id}','EmployeeCompensationsController@index');
+
+    Route::post('compensations/verify/{empId}','EmployeeCompensationsController@verify');
+    
+    Route::post('compensations/{id}','EmployeeCompensationsController@store');
+
+    Route::put('compensations/{id}','EmployeeCompensationsController@update');
 
 
-// Equipment
-Route::group([ 'prefix' => 'equipments' ], function () {
-    
-    Route::get('all','EquipmentsController@all');
-        
-    Route::get('', 'EquipmentsController@index' );
-    
-    Route::post('', 'EquipmentsController@store' );
-    
-    Route::post('verify','EquipmentsController@verifyData');
-    
-    Route::put('{id}', 'EquipmentsController@update' );
+    Route::get('education/primary/{id}','EmployeeEducationPrimaryController@index');
 
-    Route::put('status/{id}', 'EquipmentsController@changeStatus' );
-    
-});
+    Route::put('education/primary/{id}','EmployeeEducationPrimaryController@update');
 
-// GPS
-Route::group([ 'prefix' => 'shifts' ], function () {
-    
-    Route::get('all','ShiftsController@all');
-        
-    Route::get('', 'ShiftsController@index' );
-    
-    Route::post('', 'ShiftsController@store' );
-    
-    Route::put('{id}', 'ShiftsController@update' );
 
-    Route::post('upload/{id}','ShiftsController@upload');
-    
+    Route::get('education/secondary/{id}','EmployeeEducationSecondaryController@index');
+
+    Route::put('education/secondary/{id}','EmployeeEducationSecondaryController@update');
+
+
+    Route::get('education/tertiary/{id}','EmployeeEducationTertiaryController@index');
+
+    Route::post('education/tertiary/{id}','EmployeeEducationTertiaryController@store');
+
+    Route::put('education/tertiary/{id}','EmployeeEducationTertiaryController@update');
+
+
+    Route::get('education/highest/{id}','EmployeeEducationHighestController@index');
+
+    Route::post('education/highest/{id}','EmployeeEducationHighestController@store');
+
+    Route::put('education/highest/{id}','EmployeeEducationHighestController@update');
+
+
+    Route::get('education/vocational/{id}','EmployeeEducationVocationalController@index');
+
+    Route::post('education/vocational/{id}','EmployeeEducationVocationalController@store');
+
+    Route::put('education/vocational/{id}','EmployeeEducationVocationalController@update');
+
 });
 
 

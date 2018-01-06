@@ -17,7 +17,7 @@ class ProjectsController extends Controller
         $field      = $request['field'];
         $filter     = $request['filter'];
 
-        $query      = Projects::where($field,'LIKE','%'.$filter.'%')->orWhere('projectName','LIKE','%'.$filter.'%');
+        $query      = Projects::where($field,'LIKE','%'.$filter.'%')->orWhere('projectCode','LIKE','%'.$filter.'%');
         $count      = $query->count();
         $get        = $query->take($limit)->skip($offset)->orderBy($field,$order)->get();
 

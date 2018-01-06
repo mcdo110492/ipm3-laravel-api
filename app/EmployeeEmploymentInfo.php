@@ -19,7 +19,7 @@ class EmployeeEmploymentInfo extends Model
         'dateHired',
         'contractStart',
         'contractEnd',
-        'salary',
+        'contractTypeId',
         'remarks'
     ];
 
