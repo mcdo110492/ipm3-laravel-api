@@ -29,7 +29,7 @@ class EmployeeEmploymentController extends Controller
             'dateHired'             =>  'required|date',
             'contractStart'         =>  'required|date',
             'contractEnd'           =>  'required|date',
-            'salary'                =>  'required',
+            'contractTypeId'        =>  'required',
             'remarks'               =>  'required|max:150'
         ]);
    

@@ -14,7 +14,8 @@ class EmployeeContactInfo extends Model
         'employeeId',
         'presentAddress',
         'provincialAddress',
-        'mobileNumber',
+        'primaryMobileNumber',
+        'secondaryMobileNumber',
         'telephoneNumber'
     ];
 }

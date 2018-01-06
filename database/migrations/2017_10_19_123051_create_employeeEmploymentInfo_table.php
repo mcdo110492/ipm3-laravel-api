@@ -19,10 +19,10 @@ class CreateEmployeeEmploymentInfoTable extends Migration
             $table->unsignedInteger('positionId');
             $table->unsignedInteger('employeeStatusId');
             $table->unsignedInteger('employmentStatusId');
+            $table->unsignedInteger('contractTypeId');
             $table->date('dateHired');
             $table->date('contractStart');
             $table->date('contractEnd');
-            $table->double('salary',11,2);
             $table->string('remarks',150)->nullable();
             $table->timestamps();
         });

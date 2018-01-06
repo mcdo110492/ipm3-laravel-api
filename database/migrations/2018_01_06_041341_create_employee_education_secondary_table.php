@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployee201FilesTable extends Migration
+class CreateEmployeeEducationSecondaryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateEmployee201FilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee201Files', function (Blueprint $table) {
-            $table->increments('employee201FileId');
+        Schema::create('employeeEducationSecondary', function (Blueprint $table) {
+            $table->increments('educSecondaryId');
+            $table->string('educSecondarySchool',150);
+            $table->string('educSecondaryAddress',150);
+            $table->string('educSecondaryYear',20);
             $table->unsignedInteger('employeeId');
-            $table->string('filePath',200);
-            $table->unsignedSmallInteger('fileStatus')->default(1);
-            $table->string('fileDetails',150)->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateEmployee201FilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee201Files');
+        Schema::dropIfExists('employeeEducationSecondary');
     }
 }

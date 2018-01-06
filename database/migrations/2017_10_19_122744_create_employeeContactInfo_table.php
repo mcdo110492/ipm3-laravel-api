@@ -18,7 +18,8 @@ class CreateEmployeeContactInfoTable extends Migration
             $table->unsignedInteger('employeeId');
             $table->string('presentAddress',150);
             $table->string('provincialAddress',150);
-            $table->string('mobileNumber',50);
+            $table->string('primaryMobileNumber',50);
+            $table->string('secondaryMobileNumber',50);
             $table->string('telephoneNumber',50);
             $table->timestamps();
         });

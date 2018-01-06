@@ -24,10 +24,11 @@ class EmployeeContactController extends Controller
         $contact = EmployeeContactInfo::findOrFail($id);
         
         $validatedData = $request->validate([
-            'presentAddress'    =>    'required|max:150',
-            'provincialAddress' =>    'required|max:150',
-            'mobileNumber'      =>    'required|max:50',
-            'telephoneNumber'   =>    'required|max:50'
+            'presentAddress'           =>    'required|max:150',
+            'provincialAddress'        =>    'required|max:150',
+            'primaryMobileNumber'      =>    'required|max:50',
+            'secondaryMobileNumber'    =>    'required|max:50',
+            'telephoneNumber'          =>    'required|max:50'
         ]);
         
         

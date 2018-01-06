@@ -11,6 +11,8 @@ use Ipm\EmployeeContactInfo;
 use Ipm\EmployeeGovernmentInfo;
 use Ipm\EmployeeHealthInfo;
 use Ipm\EmployeeAccountInfo;
+use Ipm\EmployeeEducationPrimary;
+use Ipm\EmployeeEducationSecondary;
 
 use JWTAuth;
 
@@ -47,7 +49,8 @@ class EmployeeRegisterController extends Controller
             'employmentStatusId'    => 'required',
             'dateHired'             => 'required|date',
             'contractStart'         => 'required|date',
-            'contractEnd'           => 'required|date'
+            'contractEnd'           => 'required|date',
+            'contractTypeId'        => 'required'
         ]);
 
         
@@ -71,7 +74,7 @@ class EmployeeRegisterController extends Controller
                 'projectId'         =>  $project
             ];
 
-            $personal   =   EmployeePersonalInfo::create($personalData);
+            EmployeePersonalInfo::create($personalData);
                     
             $employeeId     =   $personal->employeeId;
                     
@@ -83,23 +86,24 @@ class EmployeeRegisterController extends Controller
                 'dateHired'             =>  $request['dateHired'],
                 'contractStart'         =>  $request['contractStart'],
                 'contractEnd'           =>  $request['contractEnd'],
-                'salary'                =>  0.00,
+                'contractTypeId'        =>  $request['contractTypeId'],
                 'remarks'               =>  $na
                     
             ];
                     
-            $employment     =   EmployeeEmploymentInfo::create($employementData);
+            EmployeeEmploymentInfo::create($employementData);
                             
             $contactData    =   [
                 'employeeId'            =>  $employeeId,
                 'presentAddress'        =>  $na,
                 'provincialAddress'     =>  $na,
-                'mobileNumber'          =>  $na,
+                'primaryMobileNumber'   =>  $na,
+                'secondaryMobileNumber' =>  $na,
                 'telephoneNumber'       =>  $na,
                 'mobileNumber'          =>  $na
             ];
                     
-            $contact        =   EmployeeContactInfo::create($contactData);
+            EmployeeContactInfo::create($contactData);
 
             $governmentData =   [
                 'employeeId'        =>  $employeeId,
@@ -109,7 +113,7 @@ class EmployeeRegisterController extends Controller
                 'tinNumber'         =>  $na
             ];
 
-            $government     =   EmployeeGovernmentInfo::create($governmentData);
+            EmployeeGovernmentInfo::create($governmentData);
 
             $healthData     =   [
                 'employeeId'    =>  $employeeId,
@@ -118,7 +122,7 @@ class EmployeeRegisterController extends Controller
                 'bloodType'     =>  $na
             ];
 
-            $health     =   EmployeeHealthInfo::create($healthData);
+            EmployeeHealthInfo::create($healthData);
 
             $accountData = [
                 'employeeId'    =>  $employeeId,
@@ -126,7 +130,26 @@ class EmployeeRegisterController extends Controller
                 'password'      =>  $request['employeeNumber']
             ];
 
-            $account = EmployeeAccountInfo::create($accountData);
+            EmployeeAccountInfo::create($accountData);
+
+            $educPrimaryData = [
+                'employeeId'            =>  $employeeId,
+                'educPrimarySchool'     =>  $na,
+                'educPrimaryAddress'    =>  $na,
+                'educPrimaryYear'       =>  $na
+            ];
+
+            EmployeeEducationPrimary::create($educPrimaryData);
+
+
+            $educSecondaryData = [
+                'employeeId'            =>  $employeeId,
+                'educSecondarySchool'   =>  $na,
+                'educSecondaryAddress'  =>  $na,
+                'educSecondaryYear'     =>  $na
+            ];
+
+            EmployeeEducationSecondary::create($educSecondaryData);
             
         });
 
