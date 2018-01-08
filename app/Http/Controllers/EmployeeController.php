@@ -36,8 +36,7 @@ class EmployeeController extends Controller
 
         $select     = 'ep.employeeId, ep.employeeNumber, ep.firstName, ep.middleName, ep.lastName, ep.profileImage, p.positionName, es.employeeStatusName, emps.employmentStatusName';
 
-        $count      = EmployeePersonalInfo::where('projectId','=',$project)->count();
-        $get        = DB::table('employeePersonalInfo as ep')
+        $query        = DB::table('employeePersonalInfo as ep')
                       ->selectRaw($select)
                       ->leftJoin('employeeEmploymentInfo as ee','ee.employeeId','=','ep.employeeId')
                       ->leftJoin('positions as p','p.positionId','=','ee.positionId')
@@ -50,11 +49,13 @@ class EmployeeController extends Controller
                           ->orWhere('ep.middleName','LIKE','%'.$filter.'%')
                           ->orWhere('ep.lastName','LIKE','%'.$filter.'%')
                           ->orWhere('p.positionName','LIKE','%'.$filter.'%');
-                      })
-                      ->take($limit)
-                      ->skip($offset)
-                      ->orderBy('ep.'.$field,$order)
-                      ->get();
+                      });
+        $count = $query->count();
+        $get = $query->take($limit)
+                ->skip($offset)
+                ->orderBy('ep.'.$field,$order)
+                ->get();
+                      
 
         return response()->json([ 'status'  =>  200, 'count' => $count, 'data' =>  $get ]);
     }

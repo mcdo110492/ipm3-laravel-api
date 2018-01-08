@@ -86,7 +86,7 @@ class PositionsController extends Controller
         
         $position->update($data);
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated','createdData' => $position]);
+        return response()->json([ 'status' => 200, 'message' => 'Updated','updatedData' => $position]);
     }
     
 }
