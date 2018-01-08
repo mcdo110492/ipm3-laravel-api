@@ -85,7 +85,7 @@ class ProjectsController extends Controller
 
        $project->update($data);
 
-        return response()->json([ 'status' => 200, 'message' => 'Updated', 'createdData' => $project]);
+        return response()->json([ 'status' => 200, 'message' => 'Updated', 'updatedData' => $project]);
     }
 
 }

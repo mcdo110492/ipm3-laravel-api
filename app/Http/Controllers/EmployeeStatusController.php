@@ -87,6 +87,6 @@ class EmployeeStatusController extends Controller
         
         $employeeStatus->update($data);
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated', 'createdData' => $employeeStatus]);
+        return response()->json([ 'status' => 200, 'message' => 'Updated', 'updatedData' => $employeeStatus]);
     }   
 }

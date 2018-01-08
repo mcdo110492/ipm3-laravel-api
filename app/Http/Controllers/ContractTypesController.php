@@ -58,8 +58,8 @@ class ContractTypesController extends Controller
     public function store(Request $request){
         
         $request->validate([
-            'contractTypeCode'      =>  'required|max:20|unique:contracTypes,contractTypeCode',
-            'contractTypeName'      =>  'required|max:150|unique:contracTypes,contractTypeName'
+            'contractTypeCode'      =>  'required|max:20|unique:contractTypes,contractTypeCode',
+            'contractTypeName'      =>  'required|max:150|unique:contractTypes,contractTypeName'
         ]);
         
         $data   =   [ 'contractTypeCode' =>  $request['contractTypeCode'], 'contractTypeName' => $request['contractTypeName'] ];
@@ -86,6 +86,6 @@ class ContractTypesController extends Controller
         
         $contract->update($data);
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated','createdData' => $contract]);
+        return response()->json([ 'status' => 200, 'message' => 'Updated','updatedData' => $contract]);
     }
 }

@@ -86,6 +86,6 @@ class SalaryTypesController extends Controller
         
         $salary->update($data);
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated','createdData' => $salary]);
+        return response()->json([ 'status' => 200, 'message' => 'Updated','updatedData' => $salary]);
     }
 }

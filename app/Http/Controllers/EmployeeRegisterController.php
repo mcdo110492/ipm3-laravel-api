@@ -74,7 +74,7 @@ class EmployeeRegisterController extends Controller
                 'projectId'         =>  $project
             ];
 
-            EmployeePersonalInfo::create($personalData);
+            $personal = EmployeePersonalInfo::create($personalData);
                     
             $employeeId     =   $personal->employeeId;
                     
