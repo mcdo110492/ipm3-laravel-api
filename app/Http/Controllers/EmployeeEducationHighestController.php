@@ -36,14 +36,15 @@ class EmployeeEducationHighestController extends Controller
 
         $create = EmployeeEducationHighest::create($data);
 
-        return response()->json(['status' => 200, 'createdData' => $create]);
+        $get = EmployeeEducationHighest::findOrFail($create->educHighestId);
+
+        return response()->json(['status' => 200, 'createdData' => $get]);
     }
 
     public function update(Request $request, $id){
         $query = EmployeeEducationHighest::findOrFail($id);
 
         $validateData = $request->validate([
-            'employeeId'            =>  'required',
             'educHighestSchool'     =>  'required|max:150',
             'educHighestAddress'    =>  'required|max:150',
             'educHighestCourse'     =>  'required|max:150',
@@ -52,6 +53,8 @@ class EmployeeEducationHighestController extends Controller
 
         $query->update($validateData);
 
-        return response()->json(['status' => 200, 'updatedData' => $query]);
+        $get = EmployeeEducationHighest::findOrFail($id);
+
+        return response()->json(['status' => 200, 'updatedData' => $get]);
     }
 }

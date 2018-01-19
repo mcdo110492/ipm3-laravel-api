@@ -17,7 +17,7 @@ class EmployeeCompensationsController extends Controller
         $get = DB::table('employeeCompensations as ec')
                ->leftJoin('salaryTypes as st','st.salaryTypeId','=','ec.salaryTypeId')
                ->where('ec.employeeId','=',$employeeId)
-               ->orderBy('st.salaryTypeName','ASC')
+               ->orderBy('ec.effectiveDate','DESC')
                ->get();
 
         return response()->json(['status' => 200, 'data' => $get]);
