@@ -20,6 +20,7 @@ class EmployeeLicenseInfo extends Model
         'licenseImage'
     ];
 
+
     public function setDateIssuedAttribute($value){
         $this->attributes['dateIssued'] = Carbon::parse($value);
     }
@@ -27,4 +28,6 @@ class EmployeeLicenseInfo extends Model
     public function setDateExpiryAttribute($value){
         $this->attributes['dateExpiry'] = Carbon::parse($value);
     }
+
+    
 }

@@ -20,6 +20,12 @@ class AuthenticateController extends Controller
             $username       = $credentials['username'];
             $password       = $credentials['password'];
 
+            $checkUsernameIfExist = User::where('username','=',$username)->count();
+
+            if($checkUsernameIfExist == 0){
+                return response()->json(['status' => 401, 'error' => 'Invalid Credentials']);
+            }
+
             $where          = ['username' => $username, 'status' => 1];
 
             $checkStatus    = User::where($where)->count();

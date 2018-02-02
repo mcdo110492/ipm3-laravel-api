@@ -11,7 +11,7 @@ class EmployeeEducationPrimaryController extends Controller
 
         $employeeId = $id;
 
-        $query = EmployeeEducationPrimary::where('employeeId','=',$id)->get();
+        $query = EmployeeEducationPrimary::where('employeeId','=',$id)->get()->first();
 
         return response()->json(['status' => 200, 'data' => $query]);
     }
@@ -21,7 +21,6 @@ class EmployeeEducationPrimaryController extends Controller
         $query = EmployeeEducationPrimary::findOrFail($id);
 
         $validateData = $request->validate([
-            'employeeId'            =>  'required',
             'educPrimarySchool'     =>  'required|max:150',
             'educPrimaryAddress'    =>  'required|max:150',
             'educPrimaryYear'       =>  'required|max:20'

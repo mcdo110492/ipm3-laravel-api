@@ -12,7 +12,7 @@ class EmployeeLicenseController extends Controller
     
     public function getLicenses($id) {
         
-        $get = EmployeeLicenseInfo::where('employeeId','=',$id)->get();
+        $get = EmployeeLicenseInfo::where('employeeId','=',$id)->orderBy('dateExpiry','ASC')->get();
         
         return response()->json([ 'status' => 200, 'data' => $get ]);
 
@@ -53,9 +53,11 @@ class EmployeeLicenseController extends Controller
                 
         $newData                =   array_prepend($validatedData,$id,'employeeId');
         
-        EmployeeLicenseInfo::create($newData);
+        $license = EmployeeLicenseInfo::create($newData);
+
+        $created = EmployeeLicenseInfo::findOrFail($license->employeeLicenseId);
         
-        return response()->json([ 'status' => 201, 'message' => 'Created' ]);
+        return response()->json([ 'status' => 201, 'message' => 'Created','createdData' => $created ]);
         
     }
         
@@ -73,8 +75,9 @@ class EmployeeLicenseController extends Controller
         ]);
         
         $license->update($validatedData);
+        $get = EmployeeLicenseInfo::where('employeeLicenseId','=',$id)->get()->first();
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
+        return response()->json([ 'status' => 200, 'message' => 'Updated', 'updatedData' => $get ]);
         
     }
 

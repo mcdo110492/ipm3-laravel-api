@@ -22,7 +22,7 @@ class EmployeeEducationTertiaryController extends Controller
             'educTertiarySchool'    =>  'required|max:150',
             'educTertiaryAddress'   =>  'required|max:150',
             'educTertiaryCourse'    =>  'required|max:150',
-            'educTertiaryYear'      =>  'required|max;20'
+            'educTertiaryYear'      =>  'required|max:20'
         ]);
 
         $data = [
@@ -33,9 +33,11 @@ class EmployeeEducationTertiaryController extends Controller
             'educTertiaryCourse'    =>  $request['educTertiaryCourse']
         ];
 
-        $create = EmployeeEducationTertiary::create($data);
+        $tertiary = EmployeeEducationTertiary::create($data);
 
-        return response()->json(['status' => 200, 'createdData' => $create]);
+        $created = EmployeeEducationTertiary::findOrFail($tertiary->educTertiaryId);
+
+        return response()->json(['status' => 200, 'createdData' => $created]);
     }
 
     public function update(Request $request, $id){
@@ -43,7 +45,6 @@ class EmployeeEducationTertiaryController extends Controller
         $query = EmployeeEducationTertiary::findOrFail($id);
 
         $validatedData = $request->validate([
-            'employeeId'                =>  'required',
             'educTertiarySchool'        =>  'required|max:150',
             'educTertiaryAddress'       =>  'required|max:150',
             'educTertiaryCourse'        =>  'required|max:150',
@@ -52,6 +53,8 @@ class EmployeeEducationTertiaryController extends Controller
 
         $query->update($validatedData);
 
-        return response()->json(['status' => 200 , 'updatedData' => $query]);
+        $get = EmployeeEducationTertiary::where('educTertiaryId','=',$id)->get()->first();
+
+        return response()->json(['status' => 200 , 'updatedData' => $get]);
     }
 }

@@ -17,19 +17,9 @@ class EmployeeEmploymentInfo extends Model
         'employeeStatusId',
         'employmentStatusId',
         'dateHired',
-        'contractStart',
-        'contractEnd',
-        'contractTypeId',
         'remarks'
     ];
 
-    public function setContractStartAttribute($value){
-        $this->attributes['contractStart'] = Carbon::parse($value);
-    }
-
-    public function setContractEndAttribute($value){
-        $this->attributes['contractEnd'] = Carbon::parse($value);
-    }
 
     public function setDateHiredAttribute($value){
         $this->attributes['dateHired'] = Carbon::parse($value);

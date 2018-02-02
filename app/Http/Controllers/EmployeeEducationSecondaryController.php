@@ -12,7 +12,7 @@ class EmployeeEducationSecondaryController extends Controller
 
         $employeeId = $id;
 
-        $query = EmployeeEducationSecondary::where('employeeId','=',$id)->get();
+        $query = EmployeeEducationSecondary::where('employeeId','=',$id)->get()->first();
 
         return response()->json(['status' => 200, 'data' => $query]);
     }
@@ -22,7 +22,6 @@ class EmployeeEducationSecondaryController extends Controller
         $query = EmployeeEducationSecondary::findOrFail($id);
 
         $validateData = $request->validate([
-            'employeeId'              =>  'required',
             'educSecondarySchool'     =>  'required|max:150',
             'educSecondaryAddress'    =>  'required|max:150',
             'educSecondaryYear'       =>  'required|max:20'

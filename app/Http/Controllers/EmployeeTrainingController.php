@@ -28,9 +28,10 @@ class EmployeeTrainingController extends Controller
         $newData                =   array_prepend($validatedData,$id,'employeeId');
         
         
-        EmployeeTrainingInfo::create($newData);
+        $training = EmployeeTrainingInfo::create($newData);
+        $created = EmployeeTrainingInfo::findOrFail($training->employeeTrainingId);
 
-        return response()->json([ 'status' => 201, 'message' => 'Created' ]);
+        return response()->json([ 'status' => 201, 'message' => 'Created', 'createdData' => $created ]);
         
     }
         
@@ -46,8 +47,10 @@ class EmployeeTrainingController extends Controller
         ]);
         
         $training->update($validatedData);
+
+        $get = EmployeeTrainingInfo::where('employeeTrainingId','=',$id)->get()->first();
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
+        return response()->json([ 'status' => 200, 'message' => 'Updated', 'updatedData' => $get ]);
         
     }
 

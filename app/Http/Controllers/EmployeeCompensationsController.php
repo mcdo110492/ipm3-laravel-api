@@ -17,7 +17,7 @@ class EmployeeCompensationsController extends Controller
         $get = DB::table('employeeCompensations as ec')
                ->leftJoin('salaryTypes as st','st.salaryTypeId','=','ec.salaryTypeId')
                ->where('ec.employeeId','=',$employeeId)
-               ->orderBy('st.salaryTypeName','ASC')
+               ->orderBy('ec.effectiveDate','DESC')
                ->get();
 
         return response()->json(['status' => 200, 'data' => $get]);
@@ -47,7 +47,7 @@ class EmployeeCompensationsController extends Controller
     public function store(Request $request, $id){
         $employeeId             = $id;
         $request->validate([
-            'salaryTypeId'        =>  ['required', Rule::unique('employeeCompensations')->where(function ($query) {
+            'salaryTypeId'        =>  ['required', Rule::unique('employeeCompensations')->where(function ($query) use ($employeeId) {
                                             return $query->where('employeeId',$employeeId);
                                       })],
             'salary'              => 'required|max:20',
@@ -56,9 +56,14 @@ class EmployeeCompensationsController extends Controller
         
         $data   =   [ 'salaryTypeId' =>  $request['salaryTypeId'], 'employeeId' => $employeeId, 'salary' => $request['salary'],'effectiveDate' => $request['effectiveDate'], 'remarks' => $request['remarks'] ];
         
-        EmployeeCompensations::create($data);
+        $createdData = EmployeeCompensations::create($data);
+
+        $get = DB::table('employeeCompensations as ec')
+                ->leftJoin('salaryTypes as st','st.salaryTypeId','=','ec.salaryTypeId')
+                ->where('ec.employeeCompensationId','=',$createdData->employeeCompensationId)
+                ->get()->first();
         
-        return response()->json([ 'status'  =>  201 , 'message'   =>  'Created' ]);
+        return response()->json([ 'status'  =>  201 , 'message'   =>  'Created', 'createdData' => $get ]);
         
     }
         
@@ -67,19 +72,23 @@ class EmployeeCompensationsController extends Controller
         $employeeId    = $request['employeeId'];
         $request->validate([
             'salaryTypeId'   =>  [ 'required', 'max:20',
-                                   Rule::unique('salaryTypes')->where(function ($query) {
+                                   Rule::unique('employeeCompensations')->where(function ($query) use ($employeeId) {
                                        return $query->where('employeeId',$employeeId);
                                    })->ignore($id,'salaryTypeId')
             ],
-            'employeeId'    =>  'required',
             'salary'        =>  'required',
             'effectiveDate' =>  'required'   
         ]);
         
-        $data   =   [ 'salaryTypeId' =>  $request['salaryTypeId'], 'employeeId' => $employeeId, 'salary' => $request['salary'],'effectiveDate' => $request['effectiveDate'], 'remarks' => $request['remarks'] ];
+        $data   =   [ 'salaryTypeId' =>  $request['salaryTypeId'], 'salary' => $request['salary'],'effectiveDate' => $request['effectiveDate'], 'remarks' => $request['remarks'] ];
         
         $compensations->update($data);
+
+        $get = DB::table('employeeCompensations as ec')
+        ->leftJoin('salaryTypes as st','st.salaryTypeId','=','ec.salaryTypeId')
+        ->where('ec.employeeCompensationId','=',$id)
+        ->get()->first();
         
-        return response()->json([ 'status' => 200, 'message' => 'Updated','createdData' => $compensations]);
+        return response()->json([ 'status' => 200, 'message' => 'Updated','updatedData' => $get]);
     }
 }

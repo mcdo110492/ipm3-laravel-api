@@ -188,6 +188,13 @@ Route::group(['prefix' => 'employee'], function () {
     Route::put('compensations/{id}','EmployeeCompensationsController@update');
 
 
+    Route::get('contract/history/{id}','EmployeeContractHistoryController@index');
+
+    Route::post('contract/history/{id}','EmployeeContractHistoryController@store');
+
+    Route::put('contract/history/{id}','EmployeeContractHistoryController@update');
+
+
     Route::get('education/primary/{id}','EmployeeEducationPrimaryController@index');
 
     Route::put('education/primary/{id}','EmployeeEducationPrimaryController@update');

@@ -15,7 +15,7 @@ class CreateEmployeeEducationVocationalTable extends Migration
     {
         Schema::create('employeeEducationVocational', function (Blueprint $table) {
             $table->increments('educVocationalId');
-            $table->string('educVocationSchool',150);
+            $table->string('educVocationalSchool',150);
             $table->string('educVocationalAddress',150);
             $table->string('educVocationalCourse',150);
             $table->string('educVocationalYear',20);

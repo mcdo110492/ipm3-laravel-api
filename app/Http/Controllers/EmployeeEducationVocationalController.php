@@ -27,7 +27,7 @@ class EmployeeEducationVocationalController extends Controller
 
         $data = [
             'employeeId'                =>  $employeeId,
-            'educVocationalSchool'      =>  $request['educVoactionalSchool'],
+            'educVocationalSchool'      =>  $request['educVocationalSchool'],
             'educVocationalAddress'     =>  $request['educVocationalAddress'],
             'educVocationalCourse'      =>  $request['educVocationalCourse'],
             'educVocationalYear'        =>  $request['educVocationalYear']
@@ -35,22 +35,32 @@ class EmployeeEducationVocationalController extends Controller
 
         $create = EmployeeEducationVocational::create($data);
 
-        return response()->json(['status' => 200, 'createdData' => $create]);
+        $get = EmployeeEducationVocational::findOrFail($create->educVocationalId);
+
+        return response()->json(['status' => 200, 'createdData' => $get]);
     }
 
     public function update(Request $request, $id){
+
         $query = EmployeeEducationVocational::findOrFail($id);
 
-        $validatedData = $request->validate([
-            'employeeId'                =>  $employeeId,
-            'educVocationalSchool'      =>  $request['educVocationalSchool'],
-            'educVocationalAddress'     =>  $request['educVocationalAddress'],
-            'educVocationalCourse'      =>  $request['educVocationalCourse'],
-            'educVocationalYear'        =>  $request['educVocationalYear']
+        $request->validate([
+            'educVocationalSchool'      =>  'required|max:150',
+            'educVocationalAddress'     =>  'required|max:150',
+            'educVocationalCourse'      =>  'required|max:150',
+            'educVocationalYear'        =>  'required|max:20'
         ]);
 
-        $query->update($validatedData);
+        $data = ['educVocationalSchool' => $request['educVocationalSchool'],
+                 'educVocationalAddress' => $request['educVocationalAddress'],
+                 'educVocationalCourse' => $request['educVocationalCourse'],
+                 'educVocationalYear' => $request['educVocationalYear']];
 
-        return response()->json(['status' => 200, 'updatedData' => $query]);
+        $query->update($data);
+        
+        $get = EmployeeEducationVocational::findOrFail($id);
+        
+
+        return response()->json(['status' => 200, 'updatedData' => $get]);
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use Ipm\EmployeePersonalInfo;
 use Ipm\EmployeeEmploymentInfo;
+use Ipm\EmployeeContractHistory;
 use Ipm\EmployeeContactInfo;
 use Ipm\EmployeeGovernmentInfo;
 use Ipm\EmployeeHealthInfo;
@@ -84,14 +85,20 @@ class EmployeeRegisterController extends Controller
                 'employeeStatusId'      =>  $request['employeeStatusId'],
                 'employmentStatusId'    =>  $request['employmentStatusId'],
                 'dateHired'             =>  $request['dateHired'],
-                'contractStart'         =>  $request['contractStart'],
-                'contractEnd'           =>  $request['contractEnd'],
-                'contractTypeId'        =>  $request['contractTypeId'],
                 'remarks'               =>  $na
                     
             ];
                     
             EmployeeEmploymentInfo::create($employementData);
+
+            $contractData = [
+                'employeeId'    =>  $employeeId,
+                'contractStart'         =>  $request['contractStart'],
+                'contractEnd'           =>  $request['contractEnd'],
+                'contractTypeId'        =>  $request['contractTypeId']
+            ];
+
+            EmployeeContractHistory::create($contractData);
                             
             $contactData    =   [
                 'employeeId'            =>  $employeeId,

@@ -27,9 +27,6 @@ class EmployeeEmploymentController extends Controller
             'employeeStatusId'      =>  'required',
             'employmentStatusId'    =>  'required',
             'dateHired'             =>  'required|date',
-            'contractStart'         =>  'required|date',
-            'contractEnd'           =>  'required|date',
-            'contractTypeId'        =>  'required',
             'remarks'               =>  'required|max:150'
         ]);
    

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmployeeEducationVocational extends Model
 {
-    protected $table = 'employeeEducationHighest';
+    protected $table = 'employeeEducationVocational';
     protected $primaryKey = 'educVocationalId';
 
     protected $fillable = [

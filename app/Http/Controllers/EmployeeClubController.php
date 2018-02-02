@@ -29,9 +29,11 @@ class EmployeeClubController extends Controller
         $newData                =   array_prepend($validatedData,$id,'employeeId');
 
 
-        EmployeeClubInfo::create($newData);
+        $club = EmployeeClubInfo::create($newData);
 
-        return response()->json([ 'status' => 201, 'message' => 'Created' ]);
+        $created = EmployeeClubInfo::findOrFail($club->employeeClubId);
+
+        return response()->json([ 'status' => 201, 'message' => 'Created', 'createdData' => $created ]);
         
     }
         
@@ -47,7 +49,9 @@ class EmployeeClubController extends Controller
         
         $club->update($validatedData);
 
-        return response()->json([ 'status' => 200, 'message' => 'Updated' ]);
+        $get = EmployeeClubInfo::where('employeeClubId','=',$id)->get()->first();
+
+        return response()->json([ 'status' => 200, 'message' => 'Updated', 'updatedData' => $get ]);
 
     }
 
