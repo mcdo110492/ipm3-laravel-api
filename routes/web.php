@@ -230,3 +230,10 @@ Route::group(['prefix' => 'employee'], function () {
 
 
 
+Route::group(['prefix' => 'user'], function () {
+
+    Route::post('profile/changePassword', "UserController@changePassword");
+
+    Route::post('profile/changeProfilePicture',"UserController@changeProfilePicture");
+
+});
