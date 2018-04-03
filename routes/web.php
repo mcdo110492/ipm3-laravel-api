@@ -236,4 +236,14 @@ Route::group(['prefix' => 'user'], function () {
 
     Route::post('profile/changeProfilePicture',"UserController@changeProfilePicture");
 
+    Route::get("get/list","UserController@getUsers");
+
+    Route::post('add',"UserController@addUser");
+
+    Route::post("reset/password","UserController@resetPassword");
+
+    Route::post('change/status',"UserController@changeStatus");
+
+    Route::post('check/username',"UserController@checkUsername");
+
 });
